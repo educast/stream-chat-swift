@@ -34,6 +34,25 @@ open class InputTextView: UITextView, AppearanceProvider {
         }
     }
     
+    /// The minimum height of the text view.
+    /// When there is no content in the text view OR the height of the content is less than this value,
+    /// the text view will be of this height
+    open var minimumHeight: CGFloat {
+        38.0
+    }
+    
+    /// The maximum number of lines before the text view starts scrolling. When the content in the text view causes
+    /// the text view to grow upto these number of lines, scrolling is enabled.
+    open var maximumNumberOfLinesBeforeScroll: Int {
+        5
+    }
+
+    /// The constraint responsible for setting the height of the text view.
+    open var heightConstraint: NSLayoutConstraint?
+    
+    /// The height(in points) required for the max number of lines before scrolling starts
+    open private(set) var heightForMaxNumberOfLines: CGFloat = 0
+    
     override open var attributedText: NSAttributedString! {
         didSet {
             textDidChangeProgrammatically()
@@ -82,7 +101,9 @@ open class InputTextView: UITextView, AppearanceProvider {
         )
         placeholderLabel.pin(anchors: [.centerY], to: self)
         
-        isScrollEnabled = false
+        heightConstraint = heightAnchor.constraint(equalToConstant: minimumHeight)
+        heightConstraint?.isActive = true
+        isScrollEnabled = true
     }
 
     /// Sets the given text in the current caret position.
@@ -105,6 +126,23 @@ open class InputTextView: UITextView, AppearanceProvider {
         
     @objc open func handleTextChange() {
         placeholderLabel.isHidden = !text.isEmpty
+        setTextViewHeight()
+    }
+
+    open func setTextViewHeight() {
+        let lineHeight = font?.lineHeight ?? appearance.fonts.body.lineHeight
+        let textHeight = (contentSize.height - textContainerInset.top - textContainerInset.bottom)
+        let numberOfLines = Int(textHeight / lineHeight)
+
+        var heightToSet = contentSize.height
+        
+        if numberOfLines > maximumNumberOfLinesBeforeScroll {
+            heightToSet = heightForMaxNumberOfLines
+        } else if numberOfLines == maximumNumberOfLinesBeforeScroll {
+            heightForMaxNumberOfLines = contentSize.height
+        }
+        
+        heightConstraint?.constant = heightToSet
     }
     
     // MARK: - Actions on the UITextView
