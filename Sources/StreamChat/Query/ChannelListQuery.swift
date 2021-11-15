@@ -91,6 +91,7 @@ public struct ChannelListQuery: Encodable {
         case presence
         case pagination
         case messagesLimit = "message_limit"
+        case membersLimit = "member_limit"
     }
     
     /// A filter for the query (see `Filter`).
@@ -101,6 +102,8 @@ public struct ChannelListQuery: Encodable {
     public var pagination: Pagination
     /// A number of messages inside each channel.
     public let messagesLimit: Int
+    /// A number of members inside each channel.
+    public let membersLimit: Int?
     /// Query options.
     public var options: QueryOptions = [.watch]
     
@@ -114,12 +117,14 @@ public struct ChannelListQuery: Encodable {
         filter: Filter<ChannelListFilterScope>,
         sort: [Sorting<ChannelListSortingKey>] = [],
         pageSize: Int = .channelsPageSize,
-        messagesLimit: Int = .messagesPageSize
+        messagesLimit: Int = .messagesPageSize,
+        membersLimit: Int? = nil
     ) {
         self.filter = filter
         self.sort = sort.appendingCidSortingKey()
         pagination = Pagination(pageSize: pageSize)
         self.messagesLimit = messagesLimit
+        self.membersLimit = membersLimit
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -131,6 +136,7 @@ public struct ChannelListQuery: Encodable {
         }
         
         try container.encode(messagesLimit, forKey: .messagesLimit)
+        try membersLimit.map { try container.encode($0, forKey: .membersLimit) }
         try options.encode(to: encoder)
         try pagination.encode(to: encoder)
     }
