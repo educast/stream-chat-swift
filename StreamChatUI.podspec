@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   spec.framework = "Foundation", "UIKit"
 
   spec.module_name = "StreamChatUI"
-  spec.source = { :git => "https://github.com/GetStream/stream-chat-swift.git", :tag => "#{spec.version}" }
+  spec.source = { :path => '.' }
   spec.source_files  = ["Sources/StreamChatUI/**/*.swift", "Sources/StreamNuke/**/*.swift", "Sources/StreamSwiftyGif/**/*.swift"]
   spec.exclude_files = ["Sources/StreamChatUI/**/*_Tests.swift", "Sources/StreamChatUI/**/*_Mock.swift"]
   spec.resource_bundles = { "StreamChatUIResources" => ["Sources/StreamChatUI/Resources/**/*"] }
