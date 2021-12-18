@@ -17,7 +17,7 @@ open class ChatChannelListVC: _ViewController,
     /// The `ChatChannelListController` instance that provides channels data.
     public var controller: ChatChannelListController!
 
-    private var loadingPreviousMessages: Bool = false
+    private var paginatingChannels: Bool = false
 
     open private(set) lazy var loadingIndicator: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {
@@ -85,8 +85,7 @@ open class ChatChannelListVC: _ViewController,
         
         // Set the Controller on the ViewController
         chatChannelListVC.controller = controller
-        chatChannelListVC.setUp()
-        
+
         // Return the newly created ChatChannelListVC
         return chatChannelListVC
     }
@@ -121,6 +120,10 @@ open class ChatChannelListVC: _ViewController,
         forItemAt indexPath: IndexPath
     ) {
         if controller.state != .remoteDataFetched {
+            return
+        }
+
+        guard collectionView.isTracking || collectionView.isDecelerating else {
             return
         }
 
@@ -222,13 +225,13 @@ open class ChatChannelListVC: _ViewController,
     }
 
     open func loadMoreChannels() {
-        guard !loadingPreviousMessages else {
+        guard !paginatingChannels else {
             return
         }
-        loadingPreviousMessages = true
+        paginatingChannels = true
 
         controller.loadNextChannels(completion: { [weak self] _ in
-            self?.loadingPreviousMessages = false
+            self?.paginatingChannels = false
         })
     }
 

@@ -169,6 +169,10 @@ open class ChatChannelVC:
             return
         }
 
+        guard messageListVC.listView.isTracking || messageListVC.listView.isDecelerating else {
+            return
+        }
+
         if indexPath.row < channelController.messages.count - 10 {
             return
         }
