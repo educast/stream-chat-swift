@@ -14,7 +14,9 @@ final class SlackMessageOptionsResolver: ChatMessageLayoutOptionsResolver {
         appearance: Appearance
     ) -> ChatMessageLayoutOptions {
         var options = super.optionsForMessage(at: indexPath, in: channel, with: messages, appearance: appearance)
-        options.remove([.flipped, .bubble, .timestamp, .avatar, .avatarSizePadding, .authorName, .threadInfo, .reactions])
+
+        [.flipped, .bubble, .timestamp, .avatar, .avatarSizePadding, .authorName, .threadInfo, .reactions]
+            .forEach { options.remove($0) }
 
         let isFirstInGroup: Bool = {
             let messageIndex = messages.index(messages.startIndex, offsetBy: indexPath.item)
@@ -27,7 +29,7 @@ final class SlackMessageOptionsResolver: ChatMessageLayoutOptionsResolver {
         }()
 
         if isFirstInGroup {
-            options.insert([.avatar, .timestamp, .authorName])
+            [.avatar, .timestamp, .authorName].forEach { options.insert($0) }
         } else {
             options.insert(.avatarSizePadding)
         }
