@@ -304,13 +304,10 @@ open class ChatMessageListVC:
     }
 
     /// Returns a Boolean value depending if it should show the date separator for the current cell
-    open func shouldShowDateSeparator(forCellAt indexPath: IndexPath) -> Bool {
+    // TODO Docs
+    open func shouldShowDateSeparator(forMessage message: ChatMessage, at indexPath: IndexPath) -> Bool {
         guard isDateSperatorEnabled else { 
             return false 
-        }
-        
-        guard let currentMessage = dataSource?.chatMessageListVC(self, messageAt: indexPath) else {
-            return false
         }
         
         let previousIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
@@ -321,8 +318,8 @@ open class ChatMessageListVC:
         
         // Only the show the separator if the previous message has a different day
         let isDifferentDay = !Calendar.current.isDate(
-            currentMessage.createdAt, 
-            equalTo: previousMessage.createdAt, 
+            message.createdAt,
+            equalTo: previousMessage.createdAt,
             toGranularity: .day
         )
         return isDifferentDay
@@ -351,8 +348,10 @@ open class ChatMessageListVC:
         cell.messageContentView?.delegate = self
         cell.messageContentView?.content = message
         
-        cell.dateSeparatorView.isHidden = !shouldShowDateSeparator(forCellAt: indexPath)
-        cell.dateSeparatorView.content = DateFormatter.messageListDateOverlay.string(from: currentMessage.createdAt)
+        if let currentMessage = message {
+            cell.dateSeparatorView.isHidden = !shouldShowDateSeparator(forMessage: currentMessage, at: indexPath)
+            cell.dateSeparatorView.content = DateFormatter.messageListDateOverlay.string(from: currentMessage.createdAt)
+        }
 
         return cell
     }
