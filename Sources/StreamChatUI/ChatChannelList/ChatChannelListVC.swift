@@ -17,7 +17,7 @@ open class ChatChannelListVC: _ViewController,
     /// The `ChatChannelListController` instance that provides channels data.
     public var controller: ChatChannelListController!
 
-    private var paginatingChannels: Bool = false
+    private var isPaginatingChannels: Bool = false
 
     open private(set) lazy var loadingIndicator: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {
@@ -123,7 +123,7 @@ open class ChatChannelListVC: _ViewController,
             return
         }
 
-        guard collectionView.isTracking || collectionView.isDecelerating else {
+        guard collectionView.isTrackingOrDecelerating else {
             return
         }
 
@@ -225,14 +225,14 @@ open class ChatChannelListVC: _ViewController,
     }
 
     open func loadMoreChannels() {
-        guard !paginatingChannels else {
+        guard !isPaginatingChannels else {
             return
         }
-        paginatingChannels = true
+        isPaginatingChannels = true
 
-        controller.loadNextChannels(completion: { [weak self] _ in
-            self?.paginatingChannels = false
-        })
+        controller.loadNextChannels { [weak self] _ in
+            self?.isPaginatingChannels = false
+        }
     }
 
     open func swipeableViewWillShowActionViews(for indexPath: IndexPath) {

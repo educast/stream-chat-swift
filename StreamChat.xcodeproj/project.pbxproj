@@ -56,6 +56,8 @@
 		430156F226B4523A0006E7EA /* WebSocketConnectPayload_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430156F126B4523A0006E7EA /* WebSocketConnectPayload_Tests.swift */; };
 		43016E1426B7189D0054E805 /* CustomMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43016E1326B7189D0054E805 /* CustomMessageContentView.swift */; };
 		43016E1626B734410054E805 /* ChatUser+CustomFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43016E1526B734410054E805 /* ChatUser+CustomFields.swift */; };
+		4304E80E2770CC4000066AC0 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304E80D2770CC4000066AC0 /* UIScrollView+Extensions.swift */; };
+		4304E80F2770CC4000066AC0 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304E80D2770CC4000066AC0 /* UIScrollView+Extensions.swift */; };
 		437FCA0726D67BE40000223C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437FCA0626D67BE40000223C /* NotificationService.swift */; };
 		437FCA0B26D67BE40000223C /* DemoAppPush.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 437FCA0426D67BE40000223C /* DemoAppPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		437FCA1026D67CB40000223C /* StreamChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 799C941B247D2F80001F1104 /* StreamChat.framework */; };
@@ -2003,6 +2005,7 @@
 		430156F126B4523A0006E7EA /* WebSocketConnectPayload_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketConnectPayload_Tests.swift; sourceTree = "<group>"; };
 		43016E1326B7189D0054E805 /* CustomMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMessageContentView.swift; sourceTree = "<group>"; };
 		43016E1526B734410054E805 /* ChatUser+CustomFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatUser+CustomFields.swift"; sourceTree = "<group>"; };
+		4304E80D2770CC4000066AC0 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		437FC9E226D53F140000223C /* ChatSample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatSample.entitlements; sourceTree = "<group>"; };
 		437FC9E826D630860000223C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		437FC9EA26D630860000223C /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -4855,6 +4858,7 @@
 				640FE0F526A57903006CE703 /* CollectionUpdatesMapper_Tests.swift */,
 				ACD502A826BC0C670029FB7D /* ImageMerger.swift */,
 				ACCA772D26C568D8007AE2ED /* NukeImageProcessor.swift */,
+				4304E80D2770CC4000066AC0 /* UIScrollView+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -6932,6 +6936,7 @@
 				ADB22F7D25F1626200853C92 /* ChatPresenceAvatarView.swift in Sources */,
 				2245B2B625602465006A612D /* ChatChannelAvatarView.swift in Sources */,
 				C1FC2F6E27416E150062530F /* ImagePipeline.swift in Sources */,
+				4304E80E2770CC4000066AC0 /* UIScrollView+Extensions.swift in Sources */,
 				C1FC2F8027416E150062530F /* ImagePrefetcher.swift in Sources */,
 				88EF29FF2571288600B06EF1 /* Array+Extensions.swift in Sources */,
 				F80BCA562631D4DA00F2107B /* ZoomDismissalInteractionController.swift in Sources */,
@@ -8251,6 +8256,7 @@
 				C121EBEE2746A1EB00023E4C /* LinkAttachmentViewInjector.swift in Sources */,
 				C121EBEF2746A1EB00023E4C /* FileAttachmentViewInjector.swift in Sources */,
 				C121EBF02746A1EB00023E4C /* AttachmentViewCatalog.swift in Sources */,
+				4304E80F2770CC4000066AC0 /* UIScrollView+Extensions.swift in Sources */,
 				C121EBF12746A1EB00023E4C /* ChatMessageContentView.swift in Sources */,
 				C121EBF22746A1EB00023E4C /* ChatMessageContentView+SwiftUI.swift in Sources */,
 				C121EBF32746A1EB00023E4C /* ChatMessageBubbleView.swift in Sources */,
