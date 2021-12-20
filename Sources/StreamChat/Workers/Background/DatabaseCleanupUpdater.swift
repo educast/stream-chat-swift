@@ -98,6 +98,6 @@ private extension ChannelListQueryDTO {
             .decode(Filter<ChannelListFilterScope>.self, from: filterJSONData)
         var updatedFilter: Filter<ChannelListFilterScope> = encodedFilter
         updatedFilter.explicitHash = filterHash
-        return ChannelListQuery(filter: updatedFilter)
+        return ChannelListQuery(filter: updatedFilter, membersLimit: 1)
     }
 }
