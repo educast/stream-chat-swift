@@ -45,7 +45,16 @@ public struct BaseURL: CustomStringConvertible {
             }
         }
         
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("USE_MOCK_SERVER") {
+            restAPIBaseURL = URL(string: "http://localhost:8889/")!
+            webSocketBaseURL = URL(string: "ws://localhost:8889/")!
+            return
+        }
+        #endif
+        
         urlString = urlString.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        
         restAPIBaseURL = URL(string: "https://\(urlString)/")!
         webSocketBaseURL = URL(string: "wss://\(urlString)/")!
     }
