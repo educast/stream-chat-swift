@@ -17,14 +17,16 @@ public final class ChatRobot: Robot {
     }
     
     @discardableResult
-    func openChat() -> Self {
-        let predicate = NSPredicate(format: "label LIKE 'Adella and Luke Skywalker'")
+    func openChat(_ name: String) -> Self {
+        let predicate = NSPredicate(format: "label LIKE '\(name)'")
+        print(app.debugDescription)
         app.otherElements.staticTexts.matching(predicate).firstMatch.tap()
         return self
     }
     
     @discardableResult
     func sendMessage(_ text: String) -> Self {
+        sleep(3) // FIXME
         app.otherElements.textViews.lastMatch?.tap()
         app.otherElements.textViews.lastMatch?.typeText(text)
         let predicate = NSPredicate(format: "label LIKE 'arrow send'")

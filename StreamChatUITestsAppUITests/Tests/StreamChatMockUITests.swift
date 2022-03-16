@@ -11,13 +11,15 @@ import XCTest
 final class StreamChatMockUITests: StreamTestCase {
 
     func testStreamDemoApp() throws {
-        ChatRobot()
+        chatRobot
             .login()
-            .openChat()
+            .openChat("The water cooler")
             .sendMessage("Hello my friend!")
         
-        server.sendMessage()
-        sleep(100)
+        companionRobot
+            .startTyping()
+            .stopTyping()
+            .sendMessage("Howaya?")
     }
     
 }

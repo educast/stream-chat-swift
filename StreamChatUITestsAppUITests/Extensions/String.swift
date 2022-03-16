@@ -6,7 +6,8 @@
 //  Copyright © 2022 Stream.io Inc. All rights reserved.
 //
 
-import UIKit
+@testable import StreamChat
+import XCTest
 
 extension String {
     

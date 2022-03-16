@@ -13,6 +13,8 @@ enum LaunchArgument: String {
 }
 
 enum EnvironmentVariable: String {
+    case websocketHost = "MOCK_SERVER_WEBSOCKET_HOST"
+    case httpHost = "MOCK_SERVER_HTTP_HOST"
     case port = "MOCK_SERVER_PORT"
 }
 

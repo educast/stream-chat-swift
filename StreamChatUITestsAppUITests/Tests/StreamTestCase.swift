@@ -14,16 +14,24 @@ class StreamTestCase: XCTestCase {
 
     let chatRobot = ChatRobot()
     let deviceRobot = DeviceRobot()
+    var companionRobot: CompanionRobot!
     var server: StreamMockServer!
+    static var swizzledOutIdle = false
 
     override func setUpWithError() throws {
         continueAfterFailure = false
         server = StreamMockServer()
         server.configure()
-        server.start(port: in_port_t(8889))
+        server.start(port: in_port_t(TestData.MockServerDetails.port))
+        companionRobot = CompanionRobot(server: server)
 
         try super.setUpWithError()
         app.setLaunchArguments(.useMockServer)
+        app.setEnvironmentVariables([
+            .websocketHost: "\(TestData.MockServerDetails.websocketHost)",
+            .httpHost: "\(TestData.MockServerDetails.httpHost)",
+            .port: "\(TestData.MockServerDetails.port)"
+        ])
         app.launch()
     }
 
@@ -36,4 +44,5 @@ class StreamTestCase: XCTestCase {
         app.launchArguments.removeAll()
         app.launchEnvironment.removeAll()
     }
+    
 }
