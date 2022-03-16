@@ -11,9 +11,8 @@ import Foundation
 public final class ChatRobot: Robot {
     
     @discardableResult
-    func login(_ name: String) -> Self {
-        let predicate = NSPredicate(format: "label LIKE '\(name)'")
-        app.cells.staticTexts.matching(predicate).firstMatch.tap()
+    func login() -> Self {
+        app.buttons["TestApp.Start"].tap()
         return self
     }
     

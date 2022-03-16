@@ -12,7 +12,7 @@ final class StreamChatMockUITests: StreamTestCase {
 
     func testStreamDemoApp() throws {
         ChatRobot()
-            .login("Luke Skywalker")
+            .login()
             .openChat()
             .sendMessage("Hello my friend!")
         

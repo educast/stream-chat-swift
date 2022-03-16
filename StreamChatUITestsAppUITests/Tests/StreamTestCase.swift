@@ -31,6 +31,7 @@ class StreamTestCase: XCTestCase {
         app.terminate()
         server.stop()
         server = nil
+        
         try super.tearDownWithError()
         app.launchArguments.removeAll()
         app.launchEnvironment.removeAll()
