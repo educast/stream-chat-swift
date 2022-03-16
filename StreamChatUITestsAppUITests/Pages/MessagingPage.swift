@@ -24,20 +24,17 @@ class MessagingPage {
         }
         
         static var chatName: XCUIElement {
-            app.staticTexts.firstMatch // FIXME
+            app.staticTexts.firstMatch
         }
         
-        static var participantsCount: XCUIElement {
-            app.staticTexts.firstMatch // FIXME
-        }
-        
-        static var participantsStatus: XCUIElement {
-            app.staticTexts.firstMatch // FIXME
+        static var participants: XCUIElement {
+            app.staticTexts.lastMatch!
         }
     }
     
     final class Composer {
         static var sendButton: XCUIElement { app.buttons["SendButton"] }
+        static var confirmButton: XCUIElement { app.buttons["ConfirmButton"] }
         static var attachmentButton: XCUIElement { app.buttons["AttachmentButton"] }
         static var commandButton: XCUIElement { app.buttons["CommandButton"] }
         static var inputField: XCUIElement { app.otherElements["InputChatMessageView"] }
@@ -46,10 +43,10 @@ class MessagingPage {
     
     final class Reactions {
         static var lol: XCUIElement { reaction(label: "reaction lol big") }
-        static var thumbsUp: XCUIElement { reaction(label: "reaction thumbsup big") }
+        static var like: XCUIElement { reaction(label: "reaction thumbsup big") }
         static var love: XCUIElement { reaction(label: "reaction love big") }
-        static var thumbsDown: XCUIElement { reaction(label: "reaction thumbsdown big") }
-        static var wut: XCUIElement { reaction(label: "reaction wut big") }
+        static var sad: XCUIElement { reaction(label: "reaction thumbsdown big") }
+        static var wow: XCUIElement { reaction(label: "reaction wut big") }
         
         private static var id = "ChatMessageReactionItemView"
         
@@ -78,21 +75,44 @@ class MessagingPage {
         }
     }
     
-    final class MessageAttributes { // FIXME
+    final class MessageAttributes {
+        static func reactionButton(messageCell: XCUIElement) -> XCUIElement {
+            messageCell.buttons["ChatMessageReactionItemView"]
+        }
+        
         static func threadButton(messageCell: XCUIElement) -> XCUIElement {
-            messageCell.buttons.firstMatch
+            messageCell.buttons["threadReplyCountButton"]
         }
         
         static func time(messageCell: XCUIElement) -> XCUIElement {
-            messageCell.staticTexts.firstMatch
+            messageCell.staticTexts["timestampLabel"]
         }
         
         static func author(messageCell: XCUIElement) -> XCUIElement {
-            messageCell.staticTexts.firstMatch
+            messageCell.staticTexts["authorNameLabel"]
         }
         
         static func text(messageCell: XCUIElement) -> XCUIElement {
-            messageCell.textViews.firstMatch
+            messageCell.textViews["textView"]
+        }
+        
+        static func deletedIcon(messageCell: XCUIElement) -> XCUIElement {
+            messageCell.images["onlyVisibleForYouIconImageView"]
+        }
+        
+        static func deletedLabel(messageCell: XCUIElement) -> XCUIElement {
+            messageCell.staticTexts["onlyVisibleForYouLabel"]
+        }
+        
+    }
+    
+    final class PopUpButtons {
+        static var cancel: XCUIElement {
+            app.scrollViews.buttons.matching(NSPredicate(format: "label LIKE 'Cancel'")).firstMatch
+        }
+        
+        static var delete: XCUIElement {
+            app.scrollViews.buttons.matching(NSPredicate(format: "label LIKE 'Delete'")).firstMatch
         }
     }
     

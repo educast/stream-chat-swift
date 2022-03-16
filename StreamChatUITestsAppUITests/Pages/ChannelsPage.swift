@@ -19,15 +19,15 @@ enum ChannelsPage {
     
     final class ChannelAttributes {
         static func name(channelCell: XCUIElement) -> XCUIElement {
-            channelCell.staticTexts.firstMatch // FIXME
+            channelCell.staticTexts["titleLabel"]
         }
         
         static func lastMessageTime(channelCell: XCUIElement) -> XCUIElement {
-            channelCell.staticTexts.firstMatch // FIXME
+            channelCell.staticTexts["timestampLabel"]
         }
         
         static func lastMessage(channelCell: XCUIElement) -> XCUIElement {
-            channelCell.staticTexts.firstMatch // FIXME
+            channelCell.staticTexts["subtitleLabel"]
         }
         
         static func avatar(channelCell: XCUIElement) -> XCUIElement {

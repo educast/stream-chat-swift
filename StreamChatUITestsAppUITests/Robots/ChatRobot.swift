@@ -7,14 +7,9 @@
 //
 
 import Foundation
+import XCTest
 
 public final class ChatRobot: Robot {
-    
-    var server: StreamMockServer
-    
-    init(_ server: StreamMockServer) {
-        self.server = server
-    }
     
     @discardableResult
     func login() -> Self {
@@ -36,8 +31,68 @@ public final class ChatRobot: Robot {
     }
     
     @discardableResult
-    func notifyMessageRead() -> Self { // FIXME
-        server.writeText(TestData.getMockResponse(fromFile: "http_notification_read"))
+    func deleteMessage() -> Self {
+        let messageCell = MessagingPage.messageCells.firstMatch
+        messageCell.press(forDuration: 1)
+        MessagingPage.MessageController.delete.tap()
+        MessagingPage.PopUpButtons.delete.tap()
+        MessagingPage.MessageAttributes.deletedLabel(messageCell: messageCell).wait()
+        return self
+    }
+    
+    @discardableResult
+    func editMessage(_ newText: String) -> Self {
+        MessagingPage.messageCells.firstMatch.press(forDuration: 1)
+        MessagingPage.MessageController.edit.tap()
+        let inputField = MessagingPage.Composer.inputField
+        inputField.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        inputField.typeText(newText)
+        MessagingPage.Composer.confirmButton.tap()
+        return self
+    }
+    
+    @discardableResult
+    func addReaction(type: TestData.Reactions) -> Self {
+        MessagingPage.messageCells.firstMatch.press(forDuration: 1)
+        var reaction: XCUIElement {
+            switch type {
+            case .love:
+                return MessagingPage.Reactions.love
+            case .lol:
+                return MessagingPage.Reactions.lol
+            case .sad:
+                return MessagingPage.Reactions.sad
+            case .wow:
+                return MessagingPage.Reactions.wow
+            default:
+                return MessagingPage.Reactions.like
+            }
+        }
+        reaction.tap()
+        return self
+    }
+    
+    @discardableResult
+    func deleteReaction(type: TestData.Reactions) -> Self {
+        return addReaction(type: type)
+    }
+    
+    @discardableResult
+    func waitForParticipantsMessage() -> Self {
+        let lastMessage = MessagingPage.messageCells.firstMatch
+        MessagingPage.MessageAttributes.author(messageCell: lastMessage).wait()
+        return self
+    }
+    
+    // TODO:
+    @discardableResult
+    func replyToMessage(_ text: String) -> Self {
+        return self
+    }
+    
+    // TODO:
+    @discardableResult
+    func replyToMessageInThread(_ text: String, alsoSendInChannel: Bool = false) -> Self {
         return self
     }
 

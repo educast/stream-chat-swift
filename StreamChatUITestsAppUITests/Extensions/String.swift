@@ -19,4 +19,8 @@ extension String {
         self.replacingOccurrences(of: target, with: to, options: NSString.CompareOptions.literal, range: nil)
     }
     
+    var html: Self {
+        "<p>\(self)</p>\n"
+    }
+    
 }

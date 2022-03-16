@@ -18,7 +18,7 @@ class ThreadPage: MessagingPage {
         static var header: XCUIElement { app.otherElements["ChatThreadHeaderView"] }
         
         static var channelName: XCUIElement {
-            app.staticTexts.firstMatch // FIXME
+            header.staticTexts.lastMatch!
         }
     }
     
