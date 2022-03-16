@@ -14,27 +14,27 @@ public final class CompanionRobot: Robot {
     
     var server: StreamMockServer
     
-    init(server: StreamMockServer) {
+    init(_ server: StreamMockServer) {
         self.server = server
     }
     
     @discardableResult
-    func startTyping() -> CompanionRobot {
+    func startTyping() -> Self {
         let json = TestData.getMockResponse(fromFile: "mock_receive_typing_start")
         server.writeText(json)
         return self
     }
     
     @discardableResult
-    func stopTyping() -> CompanionRobot {
+    func stopTyping() -> Self {
         let json = TestData.getMockResponse(fromFile: "mock_receive_typing_stop")
         server.writeText(json)
         return self
     }
     
     @discardableResult
-    func sendMessage(_ text: String) -> CompanionRobot {
-        var json = TestData.getMockResponse(fromFile: "mock_receive_message").json
+    func sendMessage(_ text: String) -> Self {
+        var json = TestData.getMockResponse(fromFile: "mock_receive_new_message").json
         var message = json["message"] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
         message["created_at"] = timestamp
@@ -44,6 +44,12 @@ public final class CompanionRobot: Robot {
         message["id"] = TestData.uniqueId
         json["message"] = message
         server.writeText(json.jsonToString())
+        return self
+    }
+    
+    @discardableResult
+    func readMessage() -> Self {
+        server.writeText(TestData.getMockResponse(fromFile: "mock_receive_message_read"))
         return self
     }
 

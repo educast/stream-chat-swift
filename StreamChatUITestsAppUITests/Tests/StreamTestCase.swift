@@ -12,8 +12,8 @@ let app = XCUIApplication()
 
 class StreamTestCase: XCTestCase {
 
-    let chatRobot = ChatRobot()
     let deviceRobot = DeviceRobot()
+    var chatRobot: ChatRobot!
     var companionRobot: CompanionRobot!
     var server: StreamMockServer!
     static var swizzledOutIdle = false
@@ -23,7 +23,8 @@ class StreamTestCase: XCTestCase {
         server = StreamMockServer()
         server.configure()
         server.start(port: in_port_t(TestData.MockServerDetails.port))
-        companionRobot = CompanionRobot(server: server)
+        chatRobot = ChatRobot(server)
+        companionRobot = CompanionRobot(server)
 
         try super.setUpWithError()
         app.setLaunchArguments(.useMockServer)

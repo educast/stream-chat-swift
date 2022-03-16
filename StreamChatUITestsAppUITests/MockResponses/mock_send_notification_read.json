@@ -1,0 +1,102 @@
+{
+  "user": {
+    "id": "luke_skywalker",
+    "banned": false,
+    "extraData": {},
+    "yetAnotherField": "40",
+    "last_active": "2022-03-11T11:06:49.462051Z",
+    "created_at": "2020-12-07T11:36:47.059906Z",
+    "image_url": "https://vignette.wikia.nocookie.net/starwars/images/2/20/LukeTLJ.jpg",
+    "testing-this": 3.14,
+    "image": "https://vignette.wikia.nocookie.net/starwars/images/2/20/LukeTLJ.jpg",
+    "updated_at": "2022-03-11T06:38:06.120557Z",
+    "birthland": "Tatooine",
+    "role": "user",
+    "extra_data": {},
+    "testing": false,
+    "online": true,
+    "name": "Luke Skywalker"
+  },
+  "channel": {
+    "last_message_at": "2022-03-11T11:08:19.576336Z",
+    "created_by": {
+      "id": "luke_skywalker",
+      "banned": false,
+      "extraData": {},
+      "yetAnotherField": "40",
+      "last_active": "2022-03-11T11:06:49.462051Z",
+      "created_at": "2020-12-07T11:36:47.059906Z",
+      "image_url": "https://vignette.wikia.nocookie.net/starwars/images/2/20/LukeTLJ.jpg",
+      "testing-this": 3.14,
+      "image": "https://vignette.wikia.nocookie.net/starwars/images/2/20/LukeTLJ.jpg",
+      "updated_at": "2022-03-11T06:38:06.120557Z",
+      "birthland": "Tatooine",
+      "role": "user",
+      "testing": false,
+      "extra_data": {},
+      "online": true,
+      "name": "Luke Skywalker"
+    },
+    "frozen": false,
+    "id": "general",
+    "created_at": "2021-11-22T16:27:24.321304Z",
+    "member_count": 3,
+    "config": {
+      "typing_events": true,
+      "connect_events": true,
+      "reactions": true,
+      "replies": true,
+      "uploads": true,
+      "push_notifications": true,
+      "updated_at": "2021-09-01T17:42:21.99149Z",
+      "automod_behavior": "block",
+      "commands": [
+        {
+          "set": "fun_set",
+          "args": "[text]",
+          "name": "giphy",
+          "description": "Post a random gif to the channel"
+        }
+      ],
+      "url_enrichment": true,
+      "mutes": true,
+      "custom_events": true,
+      "message_retention": "infinite",
+      "name": "messaging",
+      "automod": "AI",
+      "blocklist": "profanity_en_2020_v1",
+      "quotes": true,
+      "automod_thresholds": {
+        "spam": {
+          "flag": 0.85,
+          "block": 0.9
+        },
+        "toxic": {
+          "flag": 0.85,
+          "block": 0.9
+        },
+        "explicit": {
+          "flag": 0.85,
+          "block": 0.9
+        }
+      },
+      "created_at": "2021-03-01T19:26:18.406502Z",
+      "max_message_length": 5000,
+      "blocklist_behavior": "block",
+      "read_events": true,
+      "search": true
+    },
+    "type": "messaging",
+    "updated_at": "2021-11-22T16:27:24.321304Z",
+    "disabled": false,
+    "cid": "messaging:general"
+  },
+  "channel_type": "messaging",
+  "channel_id": "general",
+  "created_at": "2022-03-11T11:08:34.08633505Z",
+  "unread_channels": 0,
+  "unread_count": 0,
+  "total_unread_count": 0,
+  "type": "notification.mark_read",
+  "cid": "messaging:general"
+}

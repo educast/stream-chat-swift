@@ -65,14 +65,14 @@ final class StreamMockServer {
         server["/channels/messaging/:channel_id/event"] = { request in
             self.sendEvent(request: request)
         }
-        server["/channels/messaging/:channel_id/query"] = { _ in
+        server["/channels/messaging/:channel_id/query"] = { _ in // FIXME
             .ok(.text(TestData.getMockResponse(fromFile: "Channel")))
         }
         server["/channels"] = { _ in
             .ok(.text(TestData.getMockResponse(fromFile: "ChannelsQuery")))
         }
         server["/channels/messaging/:channel_id/read"] = { request in
-            .ok(.text(TestData.getMockResponse(fromFile: "mock_read_message")))
+            self.readMessage(request: request)
         }
     }
     
@@ -82,7 +82,7 @@ final class StreamMockServer {
         let text = requestMessage["text"]
         let id = requestMessage["id"]
         var responseJson = String(
-            bytes: XCTestCase.mockData(fromFile: "mock_send_message"),
+            bytes: XCTestCase.mockData(fromFile: "mock_send_new_message"),
             encoding: .utf8
         )!.json
         var responseMessage = responseJson["message"] as! Dictionary<String, Any>
@@ -106,5 +106,10 @@ final class StreamMockServer {
         } else {
             return .ok(.text("dunno for now"))
         }
+    }
+    
+    @discardableResult
+    private func readMessage(request: HttpRequest) -> HttpResponse {
+        .ok(.text(TestData.getMockResponse(fromFile: "mock_send_message_read")))
     }
 }

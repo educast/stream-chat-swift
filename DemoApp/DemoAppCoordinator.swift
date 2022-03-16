@@ -72,7 +72,7 @@ final class DemoAppCoordinator: NSObject, UNUserNotificationCenterDelegate {
         }
         
         // Set the log level
-        LogConfig.level = .debug
+        LogConfig.level = .debug // FIXME:
         LogConfig.formatters = [
             PrefixLogFormatter(prefixes: [.info: "ℹ️", .debug: "🛠", .warning: "⚠️", .error: "🚨"])
         ]

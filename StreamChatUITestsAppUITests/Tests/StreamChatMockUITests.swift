@@ -17,9 +17,15 @@ final class StreamChatMockUITests: StreamTestCase {
             .sendMessage("Hello my friend!")
         
         companionRobot
+            .readMessage()
             .startTyping()
             .stopTyping()
             .sendMessage("Howaya?")
+        
+        chatRobot
+            .notifyMessageRead()
+        
+        sleep(1) // FIXME
     }
     
 }
