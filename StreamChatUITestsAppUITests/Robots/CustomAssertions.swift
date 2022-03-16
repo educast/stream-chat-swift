@@ -45,11 +45,7 @@ extension Robot {
     ) -> Self {
         let messageCell = MessagingPage.messageCells.firstMatch
         let message = MessagingPage.MessageAttributes.text(messageCell: messageCell)
-        let icon = MessagingPage.MessageAttributes.deletedIcon(messageCell: messageCell)
-        let label = MessagingPage.MessageAttributes.deletedLabel(messageCell: messageCell)
         XCTAssertEqual(message.text, L10n.Message.deletedMessagePlaceholder, "Text is wrong", file: file, line: line)
-        XCTAssertEqual(label.text, L10n.Message.onlyVisibleToYou, "Label is wrong", file: file, line: line)
-        XCTAssertTrue(icon.exists, "There is no icon", file: file, line: line)
         return self
     }
     

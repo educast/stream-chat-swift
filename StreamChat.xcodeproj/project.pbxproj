@@ -1955,6 +1955,13 @@
 			remoteGlobalIDString = 790881FC25432B7200896F03;
 			remoteInfo = StreamChatUI;
 		};
+		A3F6923727E23E6D0072A293 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AD5EC8622E9A3E8005CFAC9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 799C941A247D2F80001F1104;
+			remoteInfo = StreamChat;
+		};
 		AC90839A268B120300ACFB8E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8AD5EC8622E9A3E8005CFAC9 /* Project object */;
@@ -7332,8 +7339,6 @@
 			dependencies = (
 				79F458A925E3B52900E63D67 /* PBXTargetDependency */,
 				7908820825432B7200896F03 /* PBXTargetDependency */,
-				8261CD0F27D1089F00FE97B5 /* PBXTargetDependency */,
-				82D2E81427D10D7F00169ADA /* PBXTargetDependency */,
 			);
 			name = StreamChatUITests;
 			packageProductDependencies = (
@@ -9900,7 +9905,7 @@
 		8082786B25D1BB50008039DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 799C941A247D2F80001F1104 /* StreamChat */;
-			targetProxy = 8082786A25D1BB50008039DD /* PBXContainerItemProxy */;
+			targetProxy = A3F6923727E23E6D0072A293 /* PBXContainerItemProxy */;
 		};
 		A327D4B927E0D59300CFEC3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -9911,16 +9916,11 @@
 			isa = PBXTargetDependency;
 			target = 799C941A247D2F80001F1104 /* StreamChat */;
 			targetProxy = A327D4BA27E0D5A000CFEC3F /* PBXContainerItemProxy */;
-		};		
+		};
 		A327D4BD27E0D5A000CFEC3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 793060E525778896005CF846 /* StreamChatTestTools */;
 			targetProxy = A327D4BC27E0D5A000CFEC3F /* PBXContainerItemProxy */;
-		};
-		82D2E82127D10F4300169ADA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 792DDA56256FB69E001DB91B /* DemoApp */;
-			targetProxy = 82D2E82027D10F4300169ADA /* PBXContainerItemProxy */;
 		};
 		A34407DE27D8C3400044F150 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -11108,7 +11108,7 @@
 				DEVELOPMENT_TEAM = EHV7XZLAHA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.getstream.iOS.StreamChatUITestsAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -11130,7 +11130,7 @@
 				DEVELOPMENT_TEAM = EHV7XZLAHA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.getstream.iOS.StreamChatUITestsAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -11151,7 +11151,7 @@
 				DEVELOPMENT_TEAM = EHV7XZLAHA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.getstream.iOS.StreamChatUITestsAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
