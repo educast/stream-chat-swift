@@ -91,6 +91,19 @@ extension XCUIElement {
             self.tap()
         }
     }
+    
+    @discardableResult
+    func tapAndWaitForKeyboardToAppear() -> Self {
+        let keyboard = XCUIApplication().keyboards.element
+        while (true) {
+            self.tap()
+            if keyboard.exists {
+                break;
+            }
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
+        }
+        return self
+    }
 
     @discardableResult
     func wait(timeout: Double = XCUIElement.waitTimeout) -> Bool {

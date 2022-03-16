@@ -82,7 +82,7 @@ final class StreamMockServer {
         let text = requestMessage["text"]
         let id = requestMessage["id"]
         var responseJson = String(
-            bytes: XCTestCase.mockData(fromFile: "mock_send_new_message"),
+            bytes: XCTestCase.mockData(fromFile: "http_new_message"),
             encoding: .utf8
         )!.json
         var responseMessage = responseJson["message"] as! Dictionary<String, Any>
@@ -100,9 +100,9 @@ final class StreamMockServer {
         let json = String(bytes: request.body, encoding: .utf8)!.json
         let event = json["event"] as! Dictionary<String, Any>
         if event["type"] as! String == "typing.start" {
-            return .ok(.text(TestData.getMockResponse(fromFile: "mock_send_typing_start")))
+            return .ok(.text(TestData.getMockResponse(fromFile: "http_typing_start")))
         } else if event["type"] as! String == "typing.stop" {
-            return .ok(.text(TestData.getMockResponse(fromFile: "mock_send_typing_stop")))
+            return .ok(.text(TestData.getMockResponse(fromFile: "http_typing_stop")))
         } else {
             return .ok(.text("dunno for now"))
         }
@@ -110,6 +110,6 @@ final class StreamMockServer {
     
     @discardableResult
     private func readMessage(request: HttpRequest) -> HttpResponse {
-        .ok(.text(TestData.getMockResponse(fromFile: "mock_send_message_read")))
+        .ok(.text(TestData.getMockResponse(fromFile: "http_message_read")))
     }
 }

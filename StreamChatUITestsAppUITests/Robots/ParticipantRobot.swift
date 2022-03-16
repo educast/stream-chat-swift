@@ -1,5 +1,5 @@
 //
-//  CompanionRobot.swift
+//  ParticipantRobot.swift
 //  StreamChatUITestsAppUITests
 //
 //  Created by Alexey Alter Pesotskiy  on 3/10/22.
@@ -10,7 +10,7 @@
 import Swifter
 import XCTest
 
-public final class CompanionRobot: Robot {
+public final class ParticipantRobot: Robot {
     
     var server: StreamMockServer
     
@@ -20,21 +20,21 @@ public final class CompanionRobot: Robot {
     
     @discardableResult
     func startTyping() -> Self {
-        let json = TestData.getMockResponse(fromFile: "mock_receive_typing_start")
+        let json = TestData.getMockResponse(fromFile: "ws_typing_start")
         server.writeText(json)
         return self
     }
     
     @discardableResult
     func stopTyping() -> Self {
-        let json = TestData.getMockResponse(fromFile: "mock_receive_typing_stop")
+        let json = TestData.getMockResponse(fromFile: "ws_typing_stop")
         server.writeText(json)
         return self
     }
     
     @discardableResult
     func sendMessage(_ text: String) -> Self {
-        var json = TestData.getMockResponse(fromFile: "mock_receive_new_message").json
+        var json = TestData.getMockResponse(fromFile: "ws_new_message").json
         var message = json["message"] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
         message["created_at"] = timestamp
@@ -49,7 +49,7 @@ public final class CompanionRobot: Robot {
     
     @discardableResult
     func readMessage() -> Self {
-        server.writeText(TestData.getMockResponse(fromFile: "mock_receive_message_read"))
+        server.writeText(TestData.getMockResponse(fromFile: "ws_message_read"))
         return self
     }
 

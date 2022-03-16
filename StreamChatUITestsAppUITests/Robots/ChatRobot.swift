@@ -18,30 +18,26 @@ public final class ChatRobot: Robot {
     
     @discardableResult
     func login() -> Self {
-        app.buttons["TestApp.Start"].tap()
+        StartPage.startButton.tap()
         return self
     }
     
     @discardableResult
-    func openChat(_ name: String) -> Self {
-        let predicate = NSPredicate(format: "label LIKE '\(name)'")
-        app.otherElements.staticTexts.matching(predicate).firstMatch.tap()
+    func openChannel() -> Self {
+        ChannelsPage.channelCells.firstMatch.tap()
         return self
     }
     
     @discardableResult
     func sendMessage(_ text: String) -> Self {
-        sleep(3) // FIXME
-        app.otherElements.textViews.lastMatch?.tap()
-        app.otherElements.textViews.lastMatch?.typeText(text)
-        let predicate = NSPredicate(format: "label LIKE 'arrow send'")
-        app.buttons.matching(predicate).firstMatch.tap()
+        MessagingPage.Composer.inputField.tapAndWaitForKeyboardToAppear().typeText(text)
+        MessagingPage.Composer.sendButton.tap()
         return self
     }
     
     @discardableResult
     func notifyMessageRead() -> Self { // FIXME
-        server.writeText(TestData.getMockResponse(fromFile: "mock_send_notification_read"))
+        server.writeText(TestData.getMockResponse(fromFile: "http_notification_read"))
         return self
     }
 

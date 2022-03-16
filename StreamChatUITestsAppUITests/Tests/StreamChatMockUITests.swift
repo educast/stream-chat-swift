@@ -13,10 +13,10 @@ final class StreamChatMockUITests: StreamTestCase {
     func testStreamDemoApp() throws {
         chatRobot
             .login()
-            .openChat("The water cooler")
+            .openChannel()
             .sendMessage("Hello my friend!")
         
-        companionRobot
+        participantRobot
             .readMessage()
             .startTyping()
             .stopTyping()
@@ -25,7 +25,7 @@ final class StreamChatMockUITests: StreamTestCase {
         chatRobot
             .notifyMessageRead()
         
-        sleep(1) // FIXME
+        print(app.debugDescription) // FIXME
     }
     
 }
