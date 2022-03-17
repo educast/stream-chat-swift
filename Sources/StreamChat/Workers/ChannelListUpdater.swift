@@ -89,7 +89,6 @@ class ChannelListUpdater: Worker {
                             guard let channelDTO = session.channel(cid: cid) else { continue }
                             
                             channelDTO.resetEphemeralValues()
-                            channelDTO.messages.removeAll()
                             queryDTO.channels.remove(channelDTO)
                         }
                     },
