@@ -103,7 +103,7 @@ class ChannelListUpdater: Worker {
 
     private func getOwnedChannelQueryDataFromFilter(filterHash filterHashString: String) -> OwnedChannelQueryData? {
       
-      let regex: NSRegularExpression = try! NSRegularExpression(pattern: "is\\_owner (?<predicate>\\=\\=|\\!\\=) (?<ownerId>[0-9]+)", options: [])
+      let regex: NSRegularExpression = try! NSRegularExpression(pattern: "owner\\_id (?<predicate>\\=\\=|\\!\\=) (?<ownerId>[0-9]+)", options: [])
       let range = NSRange(
         filterHashString.startIndex ..< filterHashString.endIndex,
         in: filterHashString
