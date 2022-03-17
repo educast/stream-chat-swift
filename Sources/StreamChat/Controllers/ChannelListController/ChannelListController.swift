@@ -157,7 +157,7 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
         guard state == .initialized else { return }
         do {
             try channelListObserver.startObserving()
-            try updatedChannelObserver.startObserving()
+            // try updatedChannelObserver.startObserving()
             state = .localDataFetched
         } catch {
             state = .localDataFetchFailed(ClientError(with: error))
