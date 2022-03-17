@@ -38,7 +38,7 @@ class ChannelListUpdater: Worker {
     ) {
         var updatedQuery = query
         updatedQuery.pagination = .init(pageSize: .channelsPageSize, offset: 0)
-        
+        let ownedChannelQueryData = getOwnedChannelQueryDataFromFilter(filterHash: updatedQuery.filter.filterHash)
         // Fetches the channels matching the query, and stores them in the database.
         apiClient.recoveryRequest(endpoint: .channels(query: query)) { [weak self] result in
             switch result {
@@ -49,7 +49,33 @@ class ChannelListUpdater: Worker {
                     initialActions: { session in
                         guard let queryDTO = session.channelListQuery(filterHash: updatedQuery.filter.filterHash) else { return }
                         
-                        let localQueryCIDs = Set(queryDTO.channels.compactMap { try? ChannelId(cid: $0.cid) })
+                        let decoder = JSONDecoder()
+                        let localQueryCIDs = Set(queryDTO.channels.filter {
+                            guard
+                              let extraData = try? decoder.decode([String: RawJSON].self, from: $0.extraData),
+                              let isOwnedChannelQuery = ownedChannelQueryData?.isOwnedChannelQuery,
+                              let targetOwnerId = ownedChannelQueryData?.ownerId,
+                              let channelOwnerId = extraData["owner_id"].flatMap(
+                                { ownerId -> String? in
+                                  switch ownerId {
+                                  case let .string(string):
+                                    return string
+                                  default:
+                                    return nil
+                                  }
+                                }
+                              )
+                            else {
+                              return true
+                            }
+                            if isOwnedChannelQuery {
+                              return targetOwnerId == channelOwnerId
+                            } else {
+                              return targetOwnerId != channelOwnerId
+                            }
+                          }
+                          .compactMap { try? ChannelId(cid: $0.cid) }
+                        )
                         let remoteQueryCIDs = Set(channelListPayload.channels.map(\.channel.cid))
                         let queryAlreadySynched = remoteQueryCIDs.intersection(synchedChannelIds)
                         
@@ -75,6 +101,30 @@ class ChannelListUpdater: Worker {
         }
     }
 
+    private func getOwnedChannelQueryDataFromFilter(filterHash filterHashString: String) -> OwnedChannelQueryData? {
+      
+      let regex: NSRegularExpression = try! NSRegularExpression(pattern: "is_owner (?<predicate>\\=\\=|\\!\\=) (?<ownerId>[0-9a-Z]+)", options: [])
+      let range = NSRange(
+        filterHashString.startIndex ..< filterHashString.endIndex,
+        in: filterHashString
+      )
+
+      guard let match = regex.firstMatch(in: filterHashString, options: [], range: range) else {
+        return nil
+      }
+      guard
+        let predicateRange = Range(match.range(withName: "predicate"), in: filterHashString),
+        let ownerIdRange = Range(match.range(withName: "ownerId"), in: filterHashString)
+      else {
+        return nil
+      }
+      
+      let predicate = String(filterHashString[predicateRange])
+      let ownerId = String(filterHashString[ownerIdRange])
+    
+      return (isOwnedChannelQuery: predicate == "==", ownerId: ownerId)
+    }
+  
     private func writeChannelListPayload(
         payload: ChannelListPayload,
         query: ChannelListQuery,
@@ -118,3 +168,5 @@ class ChannelListUpdater: Worker {
         }
     }
 }
+
+fileprivate typealias OwnedChannelQueryData = (isOwnedChannelQuery: Bool, ownerId: String)
