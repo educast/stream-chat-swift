@@ -156,11 +156,7 @@ extension WebSocketClient {
         var createPingController: CreatePingController = WebSocketPingController.init
         
         var createEngine: CreateEngine = {
-            if #available(iOS 13, *) {
-                return URLSessionWebSocketEngine(request: $0, sessionConfiguration: $1, callbackQueue: $2)
-            } else {
-                return StarscreamWebSocketProvider(request: $0, sessionConfiguration: $1, callbackQueue: $2)
-            }
+          return StarscreamWebSocketProvider(request: $0, sessionConfiguration: $1, callbackQueue: $2)
         }
         
         var eventBatcherBuilder: (_ handler: @escaping ([Event]) -> Void) -> EventBatcher = {
