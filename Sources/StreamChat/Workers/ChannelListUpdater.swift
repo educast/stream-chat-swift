@@ -48,7 +48,6 @@ class ChannelListUpdater: Worker {
                     query: updatedQuery,
                     initialActions: { session in
                         guard let queryDTO = session.channelListQuery(filterHash: updatedQuery.filter.filterHash) else { return }
-                        
                         let decoder = JSONDecoder()
                         let localQueryCIDs = Set(queryDTO.channels.filter {
                             guard
@@ -76,9 +75,7 @@ class ChannelListUpdater: Worker {
                           }
                           .compactMap { try? ChannelId(cid: $0.cid) }
                         )
-                        let remoteQueryCIDs = Set(channelListPayload.channels.map(\.channel.cid))
-                        let queryAlreadySynched = remoteQueryCIDs.intersection(synchedChannelIds)
-                        
+                        let queryAlreadySynched = synchedChannelIds
                         // We are going to unlink & clear those channels that are not present in the remote query,
                         // and that have not been synched nor watched. Those are outdated.
                         let cidsToRemove = localQueryCIDs
