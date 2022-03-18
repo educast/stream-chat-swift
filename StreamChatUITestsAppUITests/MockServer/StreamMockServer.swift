@@ -15,9 +15,7 @@ final class StreamMockServer {
     
     private var server: HttpServer = HttpServer()
     private weak var globalSession: WebSocketSession?
-    public var latestMessageId: String?
-    public var latestMessageText: String?
-    public var latestMessageTimestamp: String?
+    var messagingHistory: [Dictionary<String, String>] = []
     
     func start(port: UInt16) {
         do {
@@ -66,10 +64,20 @@ final class StreamMockServer {
         globalSession?.writeText(text)
     }
     
-    func saveMessageInfo(messageId: Any?, timestamp: String, text: Any?) {
-        latestMessageId = messageId as? String
-        latestMessageTimestamp = timestamp
-        latestMessageText = text as? String
+    func cacheMessage(messageId: String, timestamp: String, text: String) {
+        messagingHistory.append([
+            "messageId": messageId,
+            "timestamp": timestamp,
+            "text": text
+        ])
+    }
+    
+    func getFromCache(messageId: String) -> Dictionary<String, String> {
+        messagingHistory.filter { $0["messageId"] == messageId }.first!
+    }
+    
+    func removeFromCache(messageId: String) {
+        messagingHistory = messagingHistory.filter { $0["messageId"] != messageId }
     }
     
     private func webSocketClosure() -> ((HttpRequest) -> HttpResponse) {
@@ -90,18 +98,18 @@ final class StreamMockServer {
         let requestJson = TestData.toJson(request.body)
         let messageKey = TestData.JsonKeys.message.rawValue
         let requestMessage = requestJson[messageKey] as! Dictionary<String, Any>
-        let text = requestMessage[MessagePayloadsCodingKeys.text.rawValue]!
-        let id = requestMessage[MessagePayloadsCodingKeys.id.rawValue]
+        let text = requestMessage[MessagePayloadsCodingKeys.text.rawValue] as! String
+        let messageId = requestMessage[MessagePayloadsCodingKeys.id.rawValue] as! String
         var responseJson = TestData.toJson(.httpMessageSent)
         var responseMessage = responseJson[messageKey] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
         responseMessage[MessagePayloadsCodingKeys.createdAt.rawValue] = timestamp
         responseMessage[MessagePayloadsCodingKeys.updatedAt.rawValue] = timestamp
-        responseMessage[MessagePayloadsCodingKeys.id.rawValue] = id
+        responseMessage[MessagePayloadsCodingKeys.id.rawValue] = messageId
         responseMessage[MessagePayloadsCodingKeys.text.rawValue] = text
-        responseMessage[MessagePayloadsCodingKeys.html.rawValue] = "\(text)".html
+        responseMessage[MessagePayloadsCodingKeys.html.rawValue] = text.html
         responseJson[messageKey] = responseMessage
-        saveMessageInfo(messageId: id, timestamp: timestamp, text: text)
+        cacheMessage(messageId: messageId, timestamp: timestamp, text: text)
         return .ok(.json(responseJson))
     }
     
@@ -114,21 +122,25 @@ final class StreamMockServer {
     }
     
     private func messageDeletion(request: HttpRequest) -> HttpResponse {
+        let messageId = request.params[":message_id"]
         var json = TestData.toJson(.httpMessageDeleted)
         let messageKey = TestData.JsonKeys.message.rawValue
         var message = json[messageKey] as! Dictionary<String, Any>
-        message[MessagePayloadsCodingKeys.createdAt.rawValue] = latestMessageTimestamp
-        message[MessagePayloadsCodingKeys.updatedAt.rawValue] = latestMessageTimestamp
+        let messageDetails = getFromCache(messageId: messageId!)
+        message[MessagePayloadsCodingKeys.createdAt.rawValue] = messageDetails["timestamp"]
+        message[MessagePayloadsCodingKeys.updatedAt.rawValue] = messageDetails["timestamp"]
         message[MessagePayloadsCodingKeys.deletedAt.rawValue] = TestData.currentDate
-        message[MessagePayloadsCodingKeys.id.rawValue] = latestMessageId
-        message[MessagePayloadsCodingKeys.text.rawValue] = latestMessageText
-        message[MessagePayloadsCodingKeys.html.rawValue] = latestMessageText?.html
+        message[MessagePayloadsCodingKeys.id.rawValue] = messageId
+        message[MessagePayloadsCodingKeys.text.rawValue] = messageDetails["text"]
+        message[MessagePayloadsCodingKeys.html.rawValue] = messageDetails["text"]?.html
         json[messageKey] = message
+        removeFromCache(messageId: messageId!)
         return .ok(.json(json))
     }
     
     private func reactionCreation(request: HttpRequest) -> HttpResponse {
         let messageId = request.params[":message_id"]
+        let messageDetails = getFromCache(messageId: messageId!)
         let requestJson = TestData.toJson(request.body)
         let messageKey = TestData.JsonKeys.message.rawValue
         let reactionKey = TestData.JsonKeys.reaction.rawValue
@@ -137,11 +149,11 @@ final class StreamMockServer {
         var responseMessage = responseJson[messageKey] as! Dictionary<String, Any>
         var responseReaction = responseJson[reactionKey] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
-        responseMessage[MessagePayloadsCodingKeys.createdAt.rawValue] = latestMessageTimestamp
-        responseMessage[MessagePayloadsCodingKeys.updatedAt.rawValue] = latestMessageTimestamp
+        responseMessage[MessagePayloadsCodingKeys.createdAt.rawValue] = messageDetails["timestamp"]
+        responseMessage[MessagePayloadsCodingKeys.updatedAt.rawValue] = messageDetails["timestamp"]
         responseMessage[MessagePayloadsCodingKeys.id.rawValue] = messageId
-        responseMessage[MessagePayloadsCodingKeys.text.rawValue] = latestMessageText
-        responseMessage[MessagePayloadsCodingKeys.html.rawValue] = latestMessageText?.html
+        responseMessage[MessagePayloadsCodingKeys.text.rawValue] = messageDetails["text"]
+        responseMessage[MessagePayloadsCodingKeys.html.rawValue] = messageDetails["text"]?.html
         responseJson[messageKey] = responseMessage
         
         let codingKeys = MessageReactionPayload.CodingKeys.self
@@ -156,6 +168,7 @@ final class StreamMockServer {
     private func reactionDeletion(request: HttpRequest) -> HttpResponse {
         let messageId = request.params[":message_id"]
         let reactionType = request.params[":reaction_type"]
+        let messageDetails = getFromCache(messageId: messageId!)
         var json = TestData.toJson(.httpReactionAdded)
         let messageKey = TestData.JsonKeys.message.rawValue
         let reactionKey = TestData.JsonKeys.reaction.rawValue
@@ -163,11 +176,11 @@ final class StreamMockServer {
         var reaction = json[reactionKey] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
         
-        message[MessagePayloadsCodingKeys.createdAt.rawValue] = latestMessageTimestamp
-        message[MessagePayloadsCodingKeys.updatedAt.rawValue] = latestMessageTimestamp
+        message[MessagePayloadsCodingKeys.createdAt.rawValue] = messageDetails["timestamp"]
+        message[MessagePayloadsCodingKeys.updatedAt.rawValue] = messageDetails["timestamp"]
         message[MessagePayloadsCodingKeys.id.rawValue] = messageId
-        message[MessagePayloadsCodingKeys.text.rawValue] = latestMessageText
-        message[MessagePayloadsCodingKeys.html.rawValue] = latestMessageText?.html
+        message[MessagePayloadsCodingKeys.text.rawValue] = messageDetails["text"]
+        message[MessagePayloadsCodingKeys.html.rawValue] = messageDetails["text"]?.html
         json[messageKey] = message
         
         let codingKeys = MessageReactionPayload.CodingKeys.self

@@ -40,19 +40,16 @@ public final class ParticipantRobot: Robot {
         let messageKey = TestData.JsonKeys.message.rawValue
         var message = json[messageKey] as! Dictionary<String, Any>
         let timestamp: String = TestData.currentDate
+        let messageId = TestData.uniqueId
         message[MessagePayloadsCodingKeys.createdAt.rawValue] = timestamp
         message[MessagePayloadsCodingKeys.updatedAt.rawValue] = timestamp
         message[MessagePayloadsCodingKeys.html.rawValue] = text.html
         message[MessagePayloadsCodingKeys.text.rawValue] = text
-        message[MessagePayloadsCodingKeys.id.rawValue] = TestData.uniqueId
+        message[MessagePayloadsCodingKeys.id.rawValue] = messageId
         json[messageKey] = message
-        server.saveMessageInfo(
-            messageId: message[MessagePayloadsCodingKeys.id.rawValue],
-            timestamp: timestamp,
-            text: text
-        )
         
         server.writeText(json.jsonToString())
+        server.cacheMessage(messageId: messageId, timestamp: timestamp, text: text)
         return self
     }
     
@@ -78,6 +75,7 @@ public final class ParticipantRobot: Robot {
     
     @discardableResult
     func addReaction(type: TestData.Reactions) -> Self {
+        let messageDetails = server.messagingHistory.last!
         var json = TestData.getMockResponse(fromFile: .wsReactionAdded).json
         let messageKey = TestData.JsonKeys.message.rawValue
         let reactionKey = TestData.JsonKeys.reaction.rawValue
@@ -89,26 +87,25 @@ public final class ParticipantRobot: Robot {
         var latest_reactions = message[latestReactionsKey] as! Array<Dictionary<String, Any>>
         var reaction_counts = message[reactionsCountsKey] as! Dictionary<String, Any>
         var reaction_scores = message[reactionsScoresKey] as! Dictionary<String, Any>
-        let latestMessageId = server.latestMessageId
         let currentTimestamp = TestData.currentDate
         let codingKeys = MessageReactionPayload.CodingKeys.self
         
         reaction[codingKeys.type.rawValue] = type.rawValue
         reaction[ChannelCodingKeys.createdAt.rawValue] = currentTimestamp
-        reaction[codingKeys.messageId.rawValue] = latestMessageId
+        reaction[codingKeys.messageId.rawValue] = messageDetails["messageId"]
         reaction_counts[type.rawValue] = 1
         reaction_scores[type.rawValue] = 1
         
         for (index, _) in latest_reactions.enumerated() {
             latest_reactions[index][codingKeys.type.rawValue] = type.rawValue
-            latest_reactions[index][codingKeys.messageId.rawValue] = latestMessageId
+            latest_reactions[index][codingKeys.messageId.rawValue] = messageDetails["messageId"]
             latest_reactions[index][codingKeys.createdAt.rawValue] = currentTimestamp
         }
         
-        message[MessagePayloadsCodingKeys.id.rawValue] = latestMessageId
-        message[MessagePayloadsCodingKeys.createdAt.rawValue] = server.latestMessageTimestamp
-        message[MessagePayloadsCodingKeys.text.rawValue] = server.latestMessageText
-        message[MessagePayloadsCodingKeys.html.rawValue] = server.latestMessageText?.html
+        message[MessagePayloadsCodingKeys.id.rawValue] = messageDetails["messageId"]
+        message[MessagePayloadsCodingKeys.createdAt.rawValue] = messageDetails["timestamp"]
+        message[MessagePayloadsCodingKeys.text.rawValue] = messageDetails["text"]
+        message[MessagePayloadsCodingKeys.html.rawValue] = messageDetails["text"]?.html
         message[MessagePayloadsCodingKeys.latestReactions.rawValue] = latest_reactions
         message[reactionsCountsKey] = reaction_counts
         message[reactionsScoresKey] = reaction_scores
@@ -122,7 +119,7 @@ public final class ParticipantRobot: Robot {
     
     // TODO:
     @discardableResult
-    func deleteReaction() -> Self {
+    func deleteReaction(type: TestData.Reactions) -> Self {
         return self
     }
     
