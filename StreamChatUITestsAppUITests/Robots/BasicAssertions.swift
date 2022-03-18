@@ -17,6 +17,31 @@ extension Robot {
     ) -> Bool {
         query.matching(identifier: identifier).firstMatch.waitForExistence(timeout: timeout)
     }
+    
+    @discardableResult
+    func assertElement(
+        _ element: XCUIElement,
+        state: ElementState,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> Self {
+        element.wait(timeout: 1.5)
+        let expected: Bool
+        let actual: Bool
+        switch state {
+        case .enabled(let isEnabled):
+            expected = isEnabled
+            actual = element.isEnabled
+        case .focused(let isFocused):
+            expected = isFocused
+            actual = element.hasKeyboardFocus
+        case .visible(let isVisible):
+            expected = isVisible
+            actual = element.exists
+        }
+        XCTAssertEqual(expected, actual, state.errorMessage, file: file, line: line)
+        return self
+    }
 
     @discardableResult
     private func assertElement(

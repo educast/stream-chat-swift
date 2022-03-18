@@ -93,15 +93,18 @@ extension XCUIElement {
     }
     
     @discardableResult
-    func tapAndWaitForKeyboardToAppear() -> Self {
+    func obtainKeyboardFocus() -> Self {
         let keyboard = XCUIApplication().keyboards.element
-        while (true) {
+        self.wait()
+
+        if self.hasKeyboardFocus == false {
             self.tap()
-            if keyboard.exists {
-                break;
-            }
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
         }
+
+        if keyboard.exists == false {
+            keyboard.wait()
+        }
+        
         return self
     }
 
@@ -236,4 +239,15 @@ extension XCUIApplication {
     func bundleId() -> String {
         Bundle.main.bundleIdentifier ?? ""
     }
+
+}
+
+extension XCTest {
+    
+    func step(_ name: String, step: () -> Void) {
+        XCTContext.runActivity(named: name) { _ in
+            step()
+        }
+    }
+
 }

@@ -12,45 +12,68 @@ final class MessagingTests: StreamTestCase {
     
     func testSendMessage() throws {
         let message = "test message"
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage(message)
-            .assertMessage(message)
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Assert that the message was sent") {
+            chatRobot.assertMessage(message)
+        }
     }
 
     func testEditMessage() throws {
         let message = "test message"
         let editedMessage = "hello"
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage(message)
-            .editMessage(editedMessage)
-            .assertMessage(editedMessage)
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Edit the message: '\(editedMessage)'") {
+            chatRobot.editMessage(editedMessage)
+        }
+        step("Assert that the message was edited") {
+            chatRobot.assertMessage(editedMessage)
+        }
     }
     
     func testDeleteMessage() throws {
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage("test message")
-            .deleteMessage()
-            .assertDeletedMessage()
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Delete the message") {
+            chatRobot.deleteMessage()
+        }
+        step("Assert that the message was deleted") {
+            chatRobot.assertDeletedMessage()
+        }
     }
     
     func testReceiveMessage() throws {
         let message = "test message"
-        chatRobot
-            .login()
-            .openChannel()
+        let author = "Han Solo"
         
-        participantRobot
-            .sendMessage(message)
-        
-        chatRobot
-            .waitForParticipantsMessage()
-            .assertMessageAuthor("Han Solo")
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Receive the message: '\(message)'") {
+            participantRobot.sendMessage(message)
+        }
+        step("Assert that the message has come from \(author)") {
+            chatRobot
+                .waitForParticipantsMessage()
+                .assertMessageAuthor("Han Solo")
+        }
     }
     
 }

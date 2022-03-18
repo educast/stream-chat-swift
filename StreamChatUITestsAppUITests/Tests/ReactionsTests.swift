@@ -12,42 +12,105 @@ final class ReactionsTests: StreamTestCase {
     
     // TODO:
     func testAddReaction() throws {
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage("test message")
-            .addReaction(type: .like)
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Add the reaction") {
+            chatRobot.addReaction(type: .like)
+        }
     }
     
     // TODO:
     func testDeleteReaction() throws {
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage("test message")
-            .addReaction(type: .wow)
-            .deleteReaction(type: .wow)
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Add the reaction") {
+            chatRobot.addReaction(type: .wow)
+        }
+        step("Add the reaction") {
+            chatRobot.deleteReaction(type: .wow)
+        }
     }
     
     // TODO:
     func testAddReactionToParticipantsMessage() throws {
-        chatRobot
-            .login()
-            .openChannel()
-            .sendMessage("test message")
-            .addReaction(type: .love)
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Receive the message: '\(message)'") {
+            participantRobot.sendMessage(message)
+        }
+        step("Add the reaction") {
+            chatRobot
+                .waitForParticipantsMessage()
+                .addReaction(type: .love)
+        }
     }
     
     // TODO:
     func testDeleteReactionToParticipantsMessage() throws {
-        chatRobot
-            .login()
-            .openChannel()
+        let message = "test message"
         
-        participantRobot
-            .sendMessage("test message")
-            .addReaction(type: .lol)
-            .deleteReaction()
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Receive the message: '\(message)'") {
+            participantRobot.sendMessage(message)
+        }
+        step("Add the reaction") {
+            chatRobot
+                .waitForParticipantsMessage()
+                .addReaction(type: .lol)
+        }
+        step("Add the reaction") {
+            chatRobot.deleteReaction(type: .lol)
+        }
+    }
+    
+    // TODO:
+    func testParticipantAddsReaction() throws {
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Receive the reaction") {
+            participantRobot.addReaction(type: .like)
+        }
+    }
+    
+    // TODO:
+    func testParticipantDeletesReaction() throws {
+        let message = "test message"
+        
+        step("Open the channel") {
+            chatRobot.login().openChannel()
+        }
+        step("Send the message: '\(message)'") {
+            chatRobot.sendMessage(message)
+        }
+        step("Receive the reaction") {
+            participantRobot.addReaction(type: .lol)
+        }
+        step("Reaction was removed") {
+            participantRobot.deleteReaction(type: .lol)
+        }
     }
     
 }

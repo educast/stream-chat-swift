@@ -25,7 +25,7 @@ public final class ChatRobot: Robot {
     
     @discardableResult
     func sendMessage(_ text: String) -> Self {
-        MessagingPage.Composer.inputField.tapAndWaitForKeyboardToAppear().typeText(text)
+        MessagingPage.Composer.inputField.obtainKeyboardFocus().typeText(text)
         MessagingPage.Composer.sendButton.tap()
         return self
     }
