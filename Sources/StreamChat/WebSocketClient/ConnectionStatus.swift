@@ -109,11 +109,22 @@ enum WebSocketConnectionState: Equatable {
         }
         return true
     }
+
+    var disconnectionSource: DisconnectionSource? {
+        switch self {
+        case let .disconnected(source):
+            return source
+        case let .disconnecting(source):
+            return source
+        default:
+            return nil
+        }
+    }
     
     /// Returns `true` is the state requires and allows automatic reconnection.
     var isAutomaticReconnectionEnabled: Bool {
-        guard case let .disconnected(source) = self else { return false }
-        
+        guard let source = disconnectionSource else { return false }
+
         switch source {
         case let .serverInitiated(clientError):
             if let wsEngineError = clientError?.underlyingError as? WebSocketEngineError,
