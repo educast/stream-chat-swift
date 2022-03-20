@@ -110,9 +110,23 @@ enum WebSocketConnectionState: Equatable {
         return true
     }
 
+    // disconnecting인 경우에도 source를 알아내기
+    var disconnectionSource: DisconnectionSource? {
+        switch self {
+        case let .disconnected(source):
+            return source
+        case let .disconnecting(source):
+            return source
+        default:
+            return nil
+        }
+    }
+
     /// Returns `true` is the state requires and allows automatic reconnection.
     var isAutomaticReconnectionEnabled: Bool {
-        guard case let .disconnected(source) = self else { return false }
+        // disconnecting 일 때도 재연결을 해줘야 한다 - disconnecting인 경우에도 source를 알아낸다.
+        // guard case let .disconnected(source) = self else { return false }
+        guard let source = disconnectionSource else { return false }
 
         switch source {
         case let .serverInitiated(clientError):
