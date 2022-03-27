@@ -170,9 +170,10 @@ extension XCTestCase {
                     createdBy: dummyUser,
                     config: channelConfig,
                     isFrozen: true,
+                    isHidden: nil,
+                    members: members,
                     memberCount: 100,
                     team: .unique,
-                    members: members,
                     cooldownDuration: .random(in: 0...120)
                 ),
                 isHidden: false,
@@ -276,9 +277,10 @@ extension XCTestCase {
                         updatedAt: .unique
                     ),
                     isFrozen: true,
+                    isHidden: nil,
+                    members: nil,
                     memberCount: 100,
                     team: .unique,
-                    members: nil,
                     cooldownDuration: .random(in: 0...120)
                 ),
                 watcherCount: 10,
