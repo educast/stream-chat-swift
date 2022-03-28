@@ -177,6 +177,7 @@ extension ChatMessage {
             pinDetails: nil,
             translations: nil,
             readBy: { [] },
+            readByCount: { 0 },
             underlyingContext: nil
         )
     }
