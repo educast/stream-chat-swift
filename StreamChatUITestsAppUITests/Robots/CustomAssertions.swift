@@ -30,7 +30,8 @@ extension Robot {
     ) -> Self {
         let messageCell = MessageListPage.cells.firstMatch
         let message = MessageListPage.Attributes.text(messageCell: messageCell)
-        XCTAssertEqual(message.text, text, file: file, line: line)
+        let actualText = message.waitForText(text).text
+        XCTAssertEqual(actualText, text, file: file, line: line)
         return self
     }
     
@@ -41,7 +42,9 @@ extension Robot {
     ) -> Self {
         let messageCell = MessageListPage.cells.firstMatch
         let message = MessageListPage.Attributes.text(messageCell: messageCell)
-        XCTAssertEqual(message.text, L10n.Message.deletedMessagePlaceholder, "Text is wrong", file: file, line: line)
+        let expectedMessage = L10n.Message.deletedMessagePlaceholder
+        let actualMessage = message.waitForText(expectedMessage).text
+        XCTAssertEqual(actualMessage, expectedMessage, "Text is wrong", file: file, line: line)
         return self
     }
     
@@ -52,8 +55,9 @@ extension Robot {
         line: UInt = #line
     ) -> Self {
         let messageCell = MessageListPage.cells.firstMatch
-        let actualAuthor = MessageListPage.Attributes.author(messageCell: messageCell)
-        XCTAssertEqual(actualAuthor.text, author, file: file, line: line)
+        let textView = MessageListPage.Attributes.author(messageCell: messageCell)
+        let actualAuthor = textView.waitForText(author).text
+        XCTAssertEqual(actualAuthor, author, file: file, line: line)
         return self
     }
     

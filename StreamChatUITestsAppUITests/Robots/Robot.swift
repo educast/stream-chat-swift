@@ -48,5 +48,26 @@ extension Robot {
         app.swipeDown()
         return self
     }
-
+    
+    /// Waits for a new message from the user or participant
+    ///
+    /// - Returns: Self
+    @discardableResult
+    func waitForNewMessage(withText text: String) -> Self {
+        let cell = MessageListPage.cells.firstMatch
+        let textView = MessageListPage.Attributes.text(messageCell: cell)
+        _ = textView.waitForText(text)
+        return self
+    }
+    
+    /// Waits for a new reaction from the user or participant
+    ///
+    /// - Returns: Self
+    @discardableResult
+    func waitForNewReaction() -> Self {
+        let cell = MessageListPage.cells.firstMatch
+        let reaction = MessageListPage.Attributes.reactionButton(messageCell: cell)
+        reaction.wait()
+        return self
+    }
 }

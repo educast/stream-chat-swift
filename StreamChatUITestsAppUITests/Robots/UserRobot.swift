@@ -4,6 +4,7 @@
 
 import Foundation
 import XCTest
+import StreamChat
 
 /// Simulates user behavior
 public final class UserRobot: Robot {
@@ -16,7 +17,7 @@ public final class UserRobot: Robot {
     
     @discardableResult
     func openChannel() -> Self {
-        ChannelListPage.cells.firstMatch.tap()
+        ChannelListPage.cells.firstMatch.wait().tap()
         return self
     }
     
@@ -48,10 +49,10 @@ public final class UserRobot: Robot {
     }
     
     @discardableResult
-    func addReaction(type: TestData.Reactions) -> Self {
+    private func reactionAction(reactionType: TestData.Reactions, eventType: EventType) -> Self {
         MessageListPage.cells.firstMatch.press(forDuration: 1)
         var reaction: XCUIElement {
-            switch type {
+            switch reactionType {
             case .love:
                 return MessageListPage.Reactions.love
             case .lol:
@@ -69,22 +70,13 @@ public final class UserRobot: Robot {
     }
     
     @discardableResult
+    func addReaction(type: TestData.Reactions) -> Self {
+        reactionAction(reactionType: type, eventType: .reactionNew)
+    }
+    
+    @discardableResult
     func deleteReaction(type: TestData.Reactions) -> Self {
-        return addReaction(type: type)
-    }
-    
-    @discardableResult
-    func waitForParticipantsMessage() -> Self {
-        let lastMessageCell = MessageListPage.cells.firstMatch
-        MessageListPage.Attributes.author(messageCell: lastMessageCell).wait()
-        return self
-    }
-    
-    @discardableResult
-    func waitForParticipantsReaction() -> Self {
-        let lastMessageCell = MessageListPage.cells.firstMatch
-        MessageListPage.Attributes.reactionButton(messageCell: lastMessageCell).wait()
-        return self
+        reactionAction(reactionType: type, eventType: .reactionDeleted)
     }
     
     // TODO:

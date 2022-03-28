@@ -52,16 +52,16 @@ extension XCUIElement {
     }
 
     @discardableResult
-    func waitForLoss(timeout: Double) -> Bool {
+    func waitForLoss(timeout: Double = waitTimeout) -> Self {
         let endTime = Date().timeIntervalSince1970 * 1000 + timeout * 1000
         var elementPresent = exists
         while elementPresent && endTime > Date().timeIntervalSince1970 * 1000 {
             elementPresent = exists
         }
-        return !elementPresent
+        return self
     }
 
-    func waitForText(_ expectedText: String, timeout: Double) -> Bool {
+    func waitForText(_ expectedText: String, timeout: Double = waitTimeout) -> Self {
         let endTime = Date().timeIntervalSince1970 * 1000 + timeout * 1000
         var elementPresent = exists
         var textPresent = false
@@ -69,7 +69,7 @@ extension XCUIElement {
             elementPresent = exists
             textPresent = (text == expectedText)
         }
-        return textPresent
+        return self
     }
 
     func clear() {
@@ -83,7 +83,7 @@ extension XCUIElement {
     }
 
     func tapIfExists() {
-        if wait(timeout: 1.0) {
+        if waitForExistence(timeout: 1.0) {
             tap()
         }
     }
@@ -105,8 +105,9 @@ extension XCUIElement {
     }
 
     @discardableResult
-    func wait(timeout: Double = XCUIElement.waitTimeout) -> Bool {
-        waitForExistence(timeout: timeout)
+    func wait(timeout: Double = XCUIElement.waitTimeout) -> Self {
+        _ = waitForExistence(timeout: timeout)
+        return self
     }
 
     func tapFrameCenter() {
@@ -130,13 +131,13 @@ extension XCUIElement {
 extension XCUIElementQuery {
 
     @discardableResult
-    func waitCount(_ expectedCount: Int, timeout: Double) -> Int {
+    func waitCount(_ expectedCount: Int, timeout: Double = XCUIElement.waitTimeout) -> Self {
         let endTime = Date().timeIntervalSince1970 * 1000 + timeout * 1000
         var actualCount = count
         while actualCount < expectedCount && endTime > Date().timeIntervalSince1970 * 1000 {
             actualCount = count
         }
-        return actualCount
+        return self
     }
 
     var lastMatch: XCUIElement? {
@@ -177,7 +178,10 @@ extension XCUIApplication {
         coordinate.doubleTap()
     }
 
-    func waitForChangingState(from previousState: State, timeout: Double) -> Bool {
+    func waitForChangingState(
+        from previousState: State,
+        timeout: Double = XCUIElement.waitTimeout
+    ) -> Bool {
         let endTime = Date().timeIntervalSince1970 * 1000 + timeout * 1000
         var isChanged = (previousState != state)
         while !isChanged && endTime > Date().timeIntervalSince1970 * 1000 {
@@ -186,7 +190,7 @@ extension XCUIApplication {
         return isChanged
     }
 
-    func waitForLosingFocus(timeout: Double) -> Bool {
+    func waitForLosingFocus(timeout: Double = XCUIElement.waitTimeout) -> Bool {
         sleep(UInt32(timeout))
         return !debugDescription.contains("subtree")
     }
