@@ -327,6 +327,28 @@ class MessageDTO: NSManagedObject {
         return load(by: request, context: context)
     }
     
+    static func loadCurrentUserMessages(
+        in cid: String,
+        createdAtFrom: Date,
+        createdAtThrough: Date,
+        context: NSManagedObjectContext
+    ) -> [MessageDTO] {
+        let subpredicates: [NSPredicate] = [
+            .init(format: "channel.cid == %@", cid),
+            .init(format: "user.currentUser != nil"),
+            .init(format: "createdAt > %@", createdAtFrom as NSDate),
+            .init(format: "createdAt <= %@", createdAtThrough as NSDate),
+            .init(format: "localMessageStateRaw == nil"),
+            .init(format: "deletedAt == nil")
+        ]
+        
+        let request = NSFetchRequest<MessageDTO>(entityName: MessageDTO.entityName)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \MessageDTO.defaultSortingKey, ascending: false)]
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+        
+        return (try? context.fetch(request)) ?? []
+    }
+    
     static func numberOfReads(for messageId: MessageId, context: NSManagedObjectContext) -> Int {
         let request = NSFetchRequest<ChannelReadDTO>(entityName: ChannelReadDTO.entityName)
         request.predicate = NSPredicate(format: "readMessagesFromCurrentUser.id CONTAINS %@", messageId)
