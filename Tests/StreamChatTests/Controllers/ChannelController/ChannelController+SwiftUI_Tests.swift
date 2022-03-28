@@ -176,6 +176,7 @@ extension ChatMessage {
             isSentByCurrentUser: false,
             pinDetails: nil,
             translations: nil,
+            readBy: { [] },
             underlyingContext: nil
         )
     }
