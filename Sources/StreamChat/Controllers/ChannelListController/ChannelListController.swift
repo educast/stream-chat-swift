@@ -64,7 +64,8 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
             request,
             { $0.asModel() }
         )
-        
+
+
         observer.onChange = { [weak self] changes in
             self?.delegateCallback { [weak self] in
                 guard let self = self else {
@@ -228,6 +229,13 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
                 }
                 queryDTO.channels.remove(channelDTO)
             }
+        }
+    }
+
+    func resetHasLoadedAllPreviousChannels(newCids: Set<ChannelId>) {
+        let currentCids = Set(self.channels.map(\.cid))
+        if !newCids.isSuperset(of: currentCids) {
+            hasLoadedAllPreviousChannels = false
         }
     }
 

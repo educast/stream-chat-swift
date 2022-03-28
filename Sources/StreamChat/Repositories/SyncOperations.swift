@@ -97,6 +97,7 @@ final class RefetchChannelListQueryOperation: AsyncOperation {
             }
 
             log.info("3 & 4. Refetching channel lists queries & Cleaning up local message history", subsystems: .offlineSupport)
+
             channelRepository.resetChannelsQuery(
                 for: controller.query,
                 watchedChannelIds: context.watchedChannelIds,
@@ -107,6 +108,10 @@ final class RefetchChannelListQueryOperation: AsyncOperation {
                     log.info("Successfully refetched query for \(controller.query.debugDescription)", subsystems: .offlineSupport)
                     let queryChannelIds = channels.map(\.cid)
                     context.synchedChannelIds = context.synchedChannelIds.union(queryChannelIds)
+
+                    let newCids = Set(queryChannelIds).intersection(context.synchedChannelIds).union(context.watchedChannelIds)
+                    controller.resetHasLoadedAllPreviousChannels(newCids: newCids)
+
                     done(.continue)
                 case let .failure(error):
                     log.error(
