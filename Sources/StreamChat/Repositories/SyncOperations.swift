@@ -117,6 +117,7 @@ final class RefetchChannelListQueryOperation: AsyncOperation {
                     let queryChannelIds = watchedChannels.map(\.cid)
                     context.watchedAndSynchedChannelIds = context.watchedAndSynchedChannelIds.union(queryChannelIds)
                     context.unwantedChannelIds = context.unwantedChannelIds.union(unwantedCids)
+                    controller.resetHasLoadedAllPreviousChannels(newCids: context.watchedAndSynchedChannelIds)
                     done(.continue)
                 case let .failure(error):
                     log.error(
