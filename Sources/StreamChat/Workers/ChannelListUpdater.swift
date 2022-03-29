@@ -39,7 +39,7 @@ class ChannelListUpdater: Worker {
         var updatedQuery = query
         updatedQuery.pagination = .init(pageSize: .channelsPageSize, offset: 0)
         // updatedQuery에서 owner channel 관련 정보 분석
-        let ownedChannelQueryData = getOwnedChannelQueryDataFromFilter(filterHash: updatedQuery.filter.filterHash)
+//        let ownedChannelQueryData = getOwnedChannelQueryDataFromFilter(filterHash: updatedQuery.filter.filterHash)
         // Fetches the channels matching the query, and stores them in the database.
         apiClient.recoveryRequest(endpoint: .channels(query: query)) { [weak self] result in
             switch result {
@@ -50,37 +50,37 @@ class ChannelListUpdater: Worker {
                     initialActions: { session in
                         guard let queryDTO = session.channelListQuery(filterHash: updatedQuery.filter.filterHash) else { return }
                         // localQuerCIDs에서 ownerId filter를 고려하도록 변경
-                        // let localQueryCIDs = Set(queryDTO.channels.compactMap { try? ChannelId(cid: $0.cid) })
-                        let decoder = JSONDecoder()
-                        let localQueryCIDs = Set(queryDTO.channels.filter {
-                            guard
-                              let extraData = try? decoder.decode([String: RawJSON].self, from: $0.extraData),
-                              let isOwnedChannelQuery = ownedChannelQueryData?.isOwnedChannelQuery,
-                              let targetOwnerId = ownedChannelQueryData?.ownerId,
-                              let channelOwnerId = extraData["owner_id"].flatMap(
-                                { ownerId -> String? in
-                                  switch ownerId {
-                                  case let .string(string):
-                                    return string
-                                  default:
-                                    return nil
-                                  }
-                                }
-                              )
-                            else {
-                              return true
-                            }
-                            if isOwnedChannelQuery {
-                              return targetOwnerId == channelOwnerId
-                            } else {
-                              return targetOwnerId != channelOwnerId
-                            }
-                          }
-                          .compactMap { try? ChannelId(cid: $0.cid) }
-                        )
+                        let localQueryCIDs = Set(queryDTO.channels.compactMap { try? ChannelId(cid: $0.cid) })
+//                        let decoder = JSONDecoder()
+//                        let localQueryCIDs = Set(queryDTO.channels.filter {
+//                            guard
+//                              let extraData = try? decoder.decode([String: RawJSON].self, from: $0.extraData),
+//                              let isOwnedChannelQuery = ownedChannelQueryData?.isOwnedChannelQuery,
+//                              let targetOwnerId = ownedChannelQueryData?.ownerId,
+//                              let channelOwnerId = extraData["owner_id"].flatMap(
+//                                { ownerId -> String? in
+//                                  switch ownerId {
+//                                  case let .string(string):
+//                                    return string
+//                                  default:
+//                                    return nil
+//                                  }
+//                                }
+//                              )
+//                            else {
+//                              return true
+//                            }
+//                            if isOwnedChannelQuery {
+//                              return targetOwnerId == channelOwnerId
+//                            } else {
+//                              return targetOwnerId != channelOwnerId
+//                            }
+//                          }
+//                          .compactMap { try? ChannelId(cid: $0.cid) }
+//                        )
                         let remoteQueryCIDs = Set(channelListPayload.channels.map(\.channel.cid))
                         let queryAlreadySynched = remoteQueryCIDs.intersection(synchedChannelIds)
-                        
+
                         // We are going to unlink & clear those channels that are not present in the remote query,
                         // and that have not been synched nor watched. Those are outdated.
                         let cidsToRemove = localQueryCIDs
