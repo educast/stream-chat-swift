@@ -60,6 +60,8 @@ class ChannelListUpdater: Worker {
                         // We unlink those local channels that are no longer in remote
                         for cid in localNotInRemote {
                             guard let channelDTO = session.channel(cid: cid) else { continue }
+                            // Temporary Fix: make membership nil
+                            channelDTO.membership = nil
                             queryDTO.channels.remove(channelDTO)
                         }
 
