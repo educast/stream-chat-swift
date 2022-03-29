@@ -64,6 +64,8 @@ class ChannelListUpdater: Worker {
                             
                             channelDTO.resetEphemeralValues()
                             channelDTO.messages.removeAll()
+                            // Temporary Fix: make membership nil
+                            channelDTO.membership = nil
                             queryDTO.channels.remove(channelDTO)
                         }
                     },
