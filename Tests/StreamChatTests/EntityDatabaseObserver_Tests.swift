@@ -50,14 +50,14 @@ final class EntityChange_Tests: XCTestCase {
 final class EntityDatabaseObserver_Tests: XCTestCase {
     private var observer: EntityDatabaseObserver<TestItem, TestManagedObject>!
     var fetchRequest: NSFetchRequest<TestManagedObject>!
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     
     override func setUp() {
         super.setUp()
         
         fetchRequest = NSFetchRequest(entityName: "TestManagedObject")
         fetchRequest.sortDescriptors = [.init(keyPath: \TestManagedObject.testId, ascending: true)]
-        database = try! DatabaseContainerMock(
+        database = try! DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: .newTemporaryFileURL()),
             modelName: "TestDataModel",
             bundle: Bundle(for: EntityDatabaseObserver_Tests.self)

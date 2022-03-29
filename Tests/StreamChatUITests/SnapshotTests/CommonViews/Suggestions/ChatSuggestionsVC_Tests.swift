@@ -135,7 +135,7 @@ final class ChatSuggestionsVC_Tests: XCTestCase {
     // MARK: - Mentions Tests
     
     func test_mentions_emptyAppearance() {
-        let searchController = ChatUserSearchController_Mock.mock()
+        let searchController = ChatUserSearchControllerMock.mock()
         searchController.users_mock = []
         vc.dataSource = ChatMessageComposerSuggestionsMentionDataSource(
             collectionView: vc.collectionView,
@@ -146,7 +146,7 @@ final class ChatSuggestionsVC_Tests: XCTestCase {
     }
 
     func test_mentions_defaultAppearance() {
-        let searchController = ChatUserSearchController_Mock.mock()
+        let searchController = ChatUserSearchControllerMock.mock()
         searchController.users_mock = mentions
         vc.dataSource = ChatMessageComposerSuggestionsMentionDataSource(
             collectionView: vc.collectionView,
@@ -182,7 +182,7 @@ final class ChatSuggestionsVC_Tests: XCTestCase {
         components.suggestionsMentionView = TestView.self
 
         vc.components = components
-        let searchController = ChatUserSearchController_Mock.mock()
+        let searchController = ChatUserSearchControllerMock.mock()
         searchController.users_mock = mentions
         vc.dataSource = ChatMessageComposerSuggestionsMentionDataSource(
             collectionView: vc.collectionView,
@@ -209,7 +209,7 @@ final class ChatSuggestionsVC_Tests: XCTestCase {
         }
         
         let vc = TestView()
-        let searchController = ChatUserSearchController_Mock.mock()
+        let searchController = ChatUserSearchControllerMock.mock()
         searchController.users_mock = mentions
         vc.components = .mock
         vc.dataSource = ChatMessageComposerSuggestionsMentionDataSource(

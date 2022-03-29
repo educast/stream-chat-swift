@@ -19,7 +19,7 @@ final class WebSocketClient_Tests: XCTestCase {
     var engine: WebSocketEngineMock? { webSocketClient.engine as? WebSocketEngineMock }
     var connectionId: String!
     var user: ChatUser!
-    var requestEncoder: TestRequestEncoder!
+    var requestEncoder: RequestEncoderSpy!
     var pingController: WebSocketPingControllerMock { webSocketClient.pingController as! WebSocketPingControllerMock }
     var eventsBatcher: EventBatcherMock { webSocketClient.eventsBatcher as! EventBatcherMock }
     
@@ -40,9 +40,9 @@ final class WebSocketClient_Tests: XCTestCase {
         
         decoder = EventDecoderMock()
         
-        requestEncoder = TestRequestEncoder(baseURL: .unique(), apiKey: .init(.unique))
+        requestEncoder = RequestEncoderSpy(baseURL: .unique(), apiKey: .init(.unique))
         
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         eventNotificationCenter = EventNotificationCenterMock(database: database)
         eventNotificationCenterMiddleware = EventMiddlewareMock()
         eventNotificationCenter.add(middleware: eventNotificationCenterMiddleware)

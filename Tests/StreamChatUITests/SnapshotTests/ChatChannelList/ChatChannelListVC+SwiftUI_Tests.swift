@@ -11,7 +11,7 @@ import XCTest
 @available(iOS 13.0, *)
 final class ChatChannelListView_Tests: iOS13TestCase {
     var chatChannelList: SwiftUIViewControllerRepresentable<ChatChannelListVC>!
-    var mockedChannelListController: ChatChannelListController_Mock!
+    var mockedChannelListController: ChatChannelListControllerMock!
 
     var channels: [ChatChannel] = []
 
@@ -20,7 +20,7 @@ final class ChatChannelListView_Tests: iOS13TestCase {
         
         // TODO: We have to replace default as the components are not injected in SwiftUI views.
         Components.default = .mock
-        mockedChannelListController = ChatChannelListController_Mock.mock()
+        mockedChannelListController = ChatChannelListControllerMock.mock()
         chatChannelList = ChatChannelListVC.asView(mockedChannelListController)
 
         channels = .dummy()
@@ -37,11 +37,11 @@ final class ChatChannelListView_Tests: iOS13TestCase {
 
     func test_customNavigationViewValues_arePopulated() {
         struct CustomView: View {
-            let mockedChannelListController: ChatChannelListController_Mock!
+            let mockedChannelListController: ChatChannelListControllerMock!
             let channels: [ChatChannel] = .dummy()
 
             init() {
-                mockedChannelListController = ChatChannelListController_Mock.mock()
+                mockedChannelListController = ChatChannelListControllerMock.mock()
 
                 mockedChannelListController.simulateInitial(
                     channels: channels,

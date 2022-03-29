@@ -95,7 +95,7 @@ final class ChatClient_Tests: XCTestCase {
                 localCachingSettings = cachingSettings
                 deleteMessagesVisibility = messageVisibility
                 shouldShowShadowedMessages = showShadowedMessages
-                return DatabaseContainerMock()
+                return DatabaseContainerSpy()
             }
         
         // Create a `Client` and assert that a DB file is created on the provided URL + APIKey path
@@ -127,7 +127,7 @@ final class ChatClient_Tests: XCTestCase {
         env.clientUpdaterBuilder = ChatClientUpdaterMock.init
         env.databaseContainerBuilder = { kind, _, _, _, _, _ in
             usedDatabaseKind = kind
-            return DatabaseContainerMock()
+            return DatabaseContainerSpy()
         }
         
         // Create a `Client` and assert the correct DB kind is used
@@ -165,7 +165,7 @@ final class ChatClient_Tests: XCTestCase {
                 throw error
             }
             // Return a new container the second time
-            return DatabaseContainerMock()
+            return DatabaseContainerSpy()
         }
         
         // Create a chat client and assert `Client` tries to initialize the local DB, and when it fails, it falls back
@@ -200,7 +200,7 @@ final class ChatClient_Tests: XCTestCase {
         let webSocket = testEnv.webSocketClient
         assertMandatoryHeaderFields(webSocket?.init_sessionConfiguration)
         XCTAssertEqual(webSocket?.init_sessionConfiguration.waitsForConnectivity, false)
-        XCTAssert(webSocket?.init_requestEncoder is TestRequestEncoder)
+        XCTAssert(webSocket?.init_requestEncoder is RequestEncoderSpy)
         XCTAssert(webSocket?.init_eventNotificationCenter.database === client.databaseContainer)
         XCTAssertNotNil(webSocket?.init_eventDecoder)
         
@@ -561,8 +561,8 @@ final class ChatClient_Tests: XCTestCase {
         _ = client.apiClient
         
         assertMandatoryHeaderFields(testEnv.apiClient?.init_sessionConfiguration)
-        XCTAssert(testEnv.apiClient?.init_requestDecoder is TestRequestDecoder)
-        XCTAssert(testEnv.apiClient?.init_requestEncoder is TestRequestEncoder)
+        XCTAssert(testEnv.apiClient?.init_requestDecoder is RequestDecoderSpy)
+        XCTAssert(testEnv.apiClient?.init_requestEncoder is RequestEncoderSpy)
     }
     
     func test_disconnect_flushesRequestsQueue() {
@@ -848,12 +848,12 @@ final class TestWorker: Worker {
 
 /// A helper class which provides mock environment for Client.
 private class TestEnvironment {
-    @Atomic var apiClient: APIClientMock?
+    @Atomic var apiClient: APIClientSpy?
     @Atomic var webSocketClient: WebSocketClientMock?
-    @Atomic var databaseContainer: DatabaseContainerMock?
+    @Atomic var databaseContainer: DatabaseContainerSpy?
     
-    @Atomic var requestEncoder: TestRequestEncoder?
-    @Atomic var requestDecoder: TestRequestDecoder?
+    @Atomic var requestEncoder: RequestEncoderSpy?
+    @Atomic var requestDecoder: RequestDecoderSpy?
     
     @Atomic var eventDecoder: EventDecoder?
     
@@ -861,14 +861,14 @@ private class TestEnvironment {
 
     @Atomic var clientUpdater: ChatClientUpdaterMock?
     
-    @Atomic var backgroundTaskScheduler: MockBackgroundTaskScheduler?
+    @Atomic var backgroundTaskScheduler: BackgroundTaskSchedulerMock?
     
     @Atomic var internetConnection: InternetConnectionMock?
 
     lazy var environment: ChatClient.Environment = { [unowned self] in
         .init(
             apiClientBuilder: {
-                self.apiClient = APIClientMock(
+                self.apiClient = APIClientSpy(
                     sessionConfiguration: $0,
                     requestEncoder: $1,
                     requestDecoder: $2,
@@ -888,7 +888,7 @@ private class TestEnvironment {
                 return self.webSocketClient!
             },
             databaseContainerBuilder: {
-                self.databaseContainer = try! DatabaseContainerMock(
+                self.databaseContainer = try! DatabaseContainerSpy(
                     kind: $0,
                     shouldFlushOnStart: $1,
                     shouldResetEphemeralValuesOnStart: $2,
@@ -902,11 +902,11 @@ private class TestEnvironment {
                 if let encoder = self.requestEncoder {
                     return encoder
                 }
-                self.requestEncoder = TestRequestEncoder(baseURL: $0, apiKey: $1)
+                self.requestEncoder = RequestEncoderSpy(baseURL: $0, apiKey: $1)
                 return self.requestEncoder!
             },
             requestDecoderBuilder: {
-                self.requestDecoder = TestRequestDecoder()
+                self.requestDecoder = RequestDecoderSpy()
                 return self.requestDecoder!
             },
             eventDecoderBuilder: {
@@ -929,7 +929,7 @@ private class TestEnvironment {
                 return self.clientUpdater!
             },
             backgroundTaskSchedulerBuilder: {
-                self.backgroundTaskScheduler = MockBackgroundTaskScheduler()
+                self.backgroundTaskScheduler = BackgroundTaskSchedulerMock()
                 return self.backgroundTaskScheduler!
             },
             timerType: VirtualTimeTimer.self

@@ -5,7 +5,7 @@
 import Foundation
 @testable import StreamChat
 
-final class ChatChannelControllerMock: ChatChannelController, Spy {
+final class ChatChannelControllerSpy: ChatChannelController, Spy {
     var watchActiveChannelError: Error?
     var recordedFunctions: [String] = []
 
@@ -19,7 +19,7 @@ final class ChatChannelControllerMock: ChatChannelController, Spy {
     }
 }
 
-final class ChannelControllerMock: ChatChannelController {
+final class ChannelControllerSpy: ChatChannelController {
     @Atomic var synchronize_called = false
 
     var channel_simulated: ChatChannel?

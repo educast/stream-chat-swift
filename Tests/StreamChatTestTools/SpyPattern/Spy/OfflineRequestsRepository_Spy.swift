@@ -5,7 +5,7 @@
 import Foundation
 @testable import StreamChat
 
-final class OfflineRequestsRepositoryMock: OfflineRequestsRepository, Spy {
+final class OfflineRequestsRepositorySpy: OfflineRequestsRepository, Spy {
     var recordedFunctions: [String] = []
 
     override func runQueuedRequests(completion: @escaping () -> Void) {

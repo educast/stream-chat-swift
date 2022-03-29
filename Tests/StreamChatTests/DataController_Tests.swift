@@ -11,7 +11,7 @@ final class DataController_Tests: XCTestCase {
         // GIVEN
         let controller = DataController()
         let delegateQueueId = UUID()
-        let delegate = TestDataControllerDelegate(expectedQueueId: delegateQueueId)
+        let delegate = DataControllerDelegateSpy(expectedQueueId: delegateQueueId)
         
         controller.stateMulticastDelegate.add(additionalDelegate: delegate)
         controller.callbackQueue = DispatchQueue.testQueue(withId: delegateQueueId)

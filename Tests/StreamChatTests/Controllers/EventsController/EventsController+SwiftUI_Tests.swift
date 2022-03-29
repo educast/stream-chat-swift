@@ -17,7 +17,7 @@ final class EventsController_SwiftUI_Tests: iOS13TestCase {
         super.setUp()
         
         notificationCenter = EventNotificationCenterMock(
-            database: DatabaseContainerMock()
+            database: DatabaseContainerSpy()
         )
         controller = EventsController(
             notificationCenter: notificationCenter

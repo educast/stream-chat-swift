@@ -6,7 +6,7 @@
 import UIKit
 
 /// A mock implementation of the image loader which loads images synchronusly
-final class MockImageLoader: ImageLoading {
+final class ImageLoaderMock: ImageLoading {
     func loadImage(
         using urlRequest: URLRequest,
         cachingKey: String?,

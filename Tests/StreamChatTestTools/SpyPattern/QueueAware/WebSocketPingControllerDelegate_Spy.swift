@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `WebSocketPingControllerDelegate` implementation allowing capturing the delegate calls
-final class TestWebSocketPingControllerDelegate: WebSocketPingControllerDelegate {
+final class WebSocketPingControllerDelegateSpy: WebSocketPingControllerDelegate {
     var sendPing_calledCount = 0
     var disconnectOnNoPongReceived_calledCount = 0
     func sendPing() {

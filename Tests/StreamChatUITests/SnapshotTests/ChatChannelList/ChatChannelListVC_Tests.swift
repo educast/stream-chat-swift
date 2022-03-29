@@ -10,15 +10,15 @@ import XCTest
 final class ChatChannelListVC_Tests: XCTestCase {
     var view: ChatChannelListItemView!
     var vc: ChatChannelListVC!
-    var mockedChannelListController: ChatChannelListController_Mock!
-    var mockedCurrentUserController: CurrentChatUserController_Mock!
-    var mockedRouter: ChatChannelListRouter_Mock { vc.router as! ChatChannelListRouter_Mock }
+    var mockedChannelListController: ChatChannelListControllerMock!
+    var mockedCurrentUserController: CurrentChatUserControllerMock!
+    var mockedRouter: ChatChannelListRouterMock { vc.router as! ChatChannelListRouterMock }
 
     var channels: [ChatChannel] = []
     
     // Workaround for setting mockedCurrentUserController to userAvatarView.
     class TestChatChannelListVC: ChatChannelListVC {
-        var mockedCurrentUserController: CurrentChatUserController_Mock?
+        var mockedCurrentUserController: CurrentChatUserControllerMock?
         
         override func setUp() {
             super.setUp()
@@ -30,8 +30,8 @@ final class ChatChannelListVC_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        mockedChannelListController = ChatChannelListController_Mock.mock()
-        mockedCurrentUserController = CurrentChatUserController_Mock.mock()
+        mockedChannelListController = ChatChannelListControllerMock.mock()
+        mockedCurrentUserController = CurrentChatUserControllerMock.mock()
         mockedCurrentUserController.currentUser_mock = .mock(
             id: "Yoda",
             imageURL: TestImages.yoda.url
@@ -44,7 +44,7 @@ final class ChatChannelListVC_Tests: XCTestCase {
         vc.controller = mockedChannelListController
         
         var components = Components.mock
-        components.channelListRouter = ChatChannelListRouter_Mock.self
+        components.channelListRouter = ChatChannelListRouterMock.self
         vc.components = components
 
         channels = .dummy()
@@ -157,7 +157,7 @@ final class ChatChannelListVC_Tests: XCTestCase {
     }
     
     func test_makeChatChannelListVC() {
-        let mockedController = ChatChannelListController_Mock.mock()
+        let mockedController = ChatChannelListControllerMock.mock()
         let mockChatChannelListVC = TestChatChannelListVC.make(with: mockedController)
         
         XCTAssertNotNil(mockChatChannelListVC)

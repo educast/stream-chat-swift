@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `UserListControllerDelegate` implementation allowing capturing the delegate calls
-final class TestUserListControllerDelegate: QueueAwareDelegate, ChatUserListControllerDelegate {
+final class UserListControllerDelegateSpy: QueueAwareDelegate, ChatUserListControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didChangeUsers_changes: [ListChange<ChatUser>]?
 

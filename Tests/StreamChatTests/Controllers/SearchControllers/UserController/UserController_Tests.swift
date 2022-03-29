@@ -238,7 +238,7 @@ final class UserController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
         
         // Set the delegate
-        controller.delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -258,7 +258,7 @@ final class UserController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
         
         // Set the delegate
-        controller.delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -289,7 +289,7 @@ final class UserController_Tests: XCTestCase {
     // MARK: - Delegate
 
     func test_delegate_isAssignedCorrectly() {
-        let delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
 
         // Set the delegate
         controller.delegate = delegate
@@ -300,7 +300,7 @@ final class UserController_Tests: XCTestCase {
 
     func test_delegate_isNotifiedAboutStateChanges() throws {
         // Set the delegate
-        let delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Synchronize
@@ -318,7 +318,7 @@ final class UserController_Tests: XCTestCase {
 
     func test_delegate_isNotifiedAboutCreatedUser() throws {
         // Set the delegate
-        let delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Create user in the database.
@@ -330,7 +330,7 @@ final class UserController_Tests: XCTestCase {
     
     func test_delegate_isNotifiedAboutUpdatedUser() throws {
         // Set the delegate
-        let delegate = TestChatUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChatUserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Create user in the database.

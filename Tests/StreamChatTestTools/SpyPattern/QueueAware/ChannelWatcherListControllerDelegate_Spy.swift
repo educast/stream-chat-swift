@@ -4,10 +4,9 @@
 
 import Foundation
 @testable import StreamChat
-import XCTest
 
 // A concrete `ChatChannelWatcherListControllerDelegate` implementation allowing capturing the delegate calls
-final class TestChatChannelWatcherListControllerDelegate: QueueAwareDelegate, ChatChannelWatcherListControllerDelegate {
+final class ChannelWatcherListControllerDelegate_Spy: QueueAwareDelegate, ChatChannelWatcherListControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didUpdateWatchers_changes: [ListChange<ChatUser>]?
 

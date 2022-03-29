@@ -9,9 +9,9 @@ import XCTest
 final class NewUserQueryUpdater_Tests: XCTestCase {
     private var env: TestEnvironment!
     
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
+    var apiClient: APIClientSpy!
     
     var newUserQueryUpdater: NewUserQueryUpdater?
     
@@ -19,9 +19,9 @@ final class NewUserQueryUpdater_Tests: XCTestCase {
         super.setUp()
         env = TestEnvironment()
         
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
+        apiClient = APIClientSpy()
         
         newUserQueryUpdater = NewUserQueryUpdater(
             database: database,

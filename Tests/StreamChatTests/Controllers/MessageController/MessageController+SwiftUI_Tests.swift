@@ -8,11 +8,11 @@ import XCTest
 
 @available(iOS 13, *)
 final class MessageController_SwiftUI_Tests: iOS13TestCase {
-    var messageController: ChatMessageController_Mock!
+    var messageController: ChatMessageControllerMock!
     
     override func setUp() {
         super.setUp()
-        messageController = ChatMessageController_Mock.mock()
+        messageController = ChatMessageControllerMock.mock()
     }
     
     override func tearDown() {

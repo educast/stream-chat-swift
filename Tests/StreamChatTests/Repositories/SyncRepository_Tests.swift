@@ -10,10 +10,10 @@ final class SyncRepository_Tests: XCTestCase {
     var _activeChannelControllers: NSHashTable<ChatChannelController>!
     var _activeChannelListControllers: NSHashTable<ChatChannelListController>!
     var client: ChatClientMock!
-    var channelRepository: ChannelListUpdaterMock!
-    var offlineRequestsRepository: OfflineRequestsRepositoryMock!
-    var database: DatabaseContainerMock!
-    var apiClient: APIClientMock!
+    var channelRepository: ChannelListUpdaterSpy!
+    var offlineRequestsRepository: OfflineRequestsRepositorySpy!
+    var database: DatabaseContainerSpy!
+    var apiClient: APIClientSpy!
 
     var repository: SyncRepository!
 
@@ -29,9 +29,9 @@ final class SyncRepository_Tests: XCTestCase {
         var config = ChatClientConfig(apiKeyString: .unique)
         config.isLocalStorageEnabled = true
         client = ChatClientMock(config: config)
-        channelRepository = ChannelListUpdaterMock(database: client.databaseContainer, apiClient: client.apiClient)
-        let messageRepository = MessageRepositoryMock(database: client.databaseContainer, apiClient: client.apiClient)
-        offlineRequestsRepository = OfflineRequestsRepositoryMock(
+        channelRepository = ChannelListUpdaterSpy(database: client.databaseContainer, apiClient: client.apiClient)
+        let messageRepository = MessageRepositorySpy(database: client.databaseContainer, apiClient: client.apiClient)
+        offlineRequestsRepository = OfflineRequestsRepositorySpy(
             messageRepository: messageRepository,
             database: client.databaseContainer,
             apiClient: client.apiClient
@@ -161,7 +161,7 @@ final class SyncRepository_Tests: XCTestCase {
             createChannel: true
         )
 
-        let chatController = ChatChannelControllerMock(client: client)
+        let chatController = ChatChannelControllerSpy(client: client)
         chatController.state = .remoteDataFetched
         _activeChannelControllers.add(chatController)
 

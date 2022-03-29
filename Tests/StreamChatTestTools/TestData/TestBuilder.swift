@@ -6,18 +6,18 @@ import Foundation
 @testable import StreamChat
 
 final class TestBuilder {
-    let encoder = TestRequestEncoder(
+    let encoder = RequestEncoderSpy(
         baseURL: .unique(),
         apiKey: .init(.unique)
     )
-    let decoder = TestRequestDecoder()
+    let decoder = RequestDecoderSpy()
     var sessionConfiguration = URLSessionConfiguration.ephemeral
     let uniqueHeaderValue = String.unique
 
     func make() -> StreamCDNClient {
         sessionConfiguration.httpAdditionalHeaders?["unique_value"] = uniqueHeaderValue
-        RequestRecorderURLProtocol.startTestSession(with: &sessionConfiguration)
-        MockNetworkURLProtocol.startTestSession(with: &sessionConfiguration)
+        RequestRecorderURLProtocolMock.startTestSession(with: &sessionConfiguration)
+        URLProtocolMock.startTestSession(with: &sessionConfiguration)
 
         return StreamCDNClient(
             encoder: encoder,

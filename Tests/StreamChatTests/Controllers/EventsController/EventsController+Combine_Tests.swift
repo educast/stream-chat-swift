@@ -18,7 +18,7 @@ final class EventsController_Combine_Tests: iOS13TestCase {
     override func setUp() {
         super.setUp()
         
-        notificationCenter = EventNotificationCenterMock(database: DatabaseContainerMock())
+        notificationCenter = EventNotificationCenterMock(database: DatabaseContainerSpy())
         controller = EventsController(notificationCenter: notificationCenter)
         cancellables = []
     }

@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `DataControllerDelegate` implementation allowing capturing the delegate calls
-final class TestDataControllerDelegate: QueueAwareDelegate, DataControllerStateDelegate {
+final class DataControllerDelegateSpy: QueueAwareDelegate, DataControllerStateDelegate {
     var state: DataController.State = .initialized
 
     func controller(_ controller: DataController, didChangeState state: DataController.State) {

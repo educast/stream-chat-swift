@@ -7,7 +7,7 @@ import CoreData
 import XCTest
 
 /// A testable subclass of DatabaseContainer allowing response simulation.
-final class DatabaseContainerMock: DatabaseContainer, Spy {
+final class DatabaseContainerSpy: DatabaseContainer, Spy {
     @Atomic var recordedFunctions: [String] = []
 
     /// If set, the `write` completion block is called with this value.

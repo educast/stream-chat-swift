@@ -191,7 +191,7 @@ final class ChatChannelWatcherListController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
 
         // Set the delegate
-        controller.delegate = TestChatChannelWatcherListControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChannelWatcherListControllerDelegate_Spy(expectedQueueId: callbackQueueID)
 
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -211,7 +211,7 @@ final class ChatChannelWatcherListController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
 
         // Set the delegate
-        controller.delegate = TestChatChannelWatcherListControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChannelWatcherListControllerDelegate_Spy(expectedQueueId: callbackQueueID)
 
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -242,7 +242,7 @@ final class ChatChannelWatcherListController_Tests: XCTestCase {
     // MARK: - Delegate
 
     func test_delegate_isAssignedCorrectly() {
-        let delegate = TestChatChannelWatcherListControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelWatcherListControllerDelegate_Spy(expectedQueueId: callbackQueueID)
 
         // Set the delegate
         controller.delegate = delegate
@@ -253,7 +253,7 @@ final class ChatChannelWatcherListController_Tests: XCTestCase {
 
     func test_delegate_isNotifiedAboutStateChanges() throws {
         // Set the delegate
-        let delegate = TestChatChannelWatcherListControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelWatcherListControllerDelegate_Spy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Synchronize
@@ -274,7 +274,7 @@ final class ChatChannelWatcherListController_Tests: XCTestCase {
         let watcher2ID: UserId = .unique
 
         // Set the delegate
-        let delegate = TestChatChannelWatcherListControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelWatcherListControllerDelegate_Spy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Create channel in the database.

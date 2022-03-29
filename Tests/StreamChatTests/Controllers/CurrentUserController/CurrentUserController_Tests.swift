@@ -170,7 +170,7 @@ final class CurrentUserController_Tests: XCTestCase {
     
     func test_delegate_isAssignedCorrectly() {
         // Set the delegate
-        let delegate = TestUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = UserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Assert the delegate is assigned correctly
@@ -179,7 +179,7 @@ final class CurrentUserController_Tests: XCTestCase {
     
     func test_delegate_isReferencedWeakly() {
         // Create the delegate
-        var delegate: TestUserControllerDelegate? = .init(expectedQueueId: callbackQueueID)
+        var delegate: UserControllerDelegateSpy? = .init(expectedQueueId: callbackQueueID)
         
         // Set the delegate
         controller.delegate = delegate
@@ -203,7 +203,7 @@ final class CurrentUserController_Tests: XCTestCase {
         )
         
         // Set the delegate
-        let delegate = TestUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = UserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Simulate saving current user to a database
@@ -230,7 +230,7 @@ final class CurrentUserController_Tests: XCTestCase {
         )
         
         // Set the delegate
-        let delegate = TestUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = UserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Simulate saving current user to a database
@@ -265,7 +265,7 @@ final class CurrentUserController_Tests: XCTestCase {
         let unreadCount = UnreadCount(channels: 10, messages: 15)
         
         // Set the delegate
-        let delegate = TestUserControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = UserControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Simulate saving current user to a database

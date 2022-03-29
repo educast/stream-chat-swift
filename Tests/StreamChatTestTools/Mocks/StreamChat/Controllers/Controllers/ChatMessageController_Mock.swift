@@ -5,9 +5,9 @@
 import Foundation
 @testable import StreamChat
 
-public class ChatMessageController_Mock: ChatMessageController {
+public class ChatMessageControllerMock: ChatMessageController {
     /// Creates a new mock instance of `ChatMessageController`.
-    public static func mock(currentUserId: UserId = "ID") -> ChatMessageController_Mock {
+    public static func mock(currentUserId: UserId = "ID") -> ChatMessageControllerMock {
         let chatClient = ChatClient.mock()
         chatClient.currentUserId = currentUserId
         return .init(client: chatClient, cid: try! .init(cid: "mock:channel"), messageId: "MockMessage")
@@ -45,7 +45,7 @@ public class ChatMessageController_Mock: ChatMessageController {
     }
 }
 
-public extension ChatMessageController_Mock {
+public extension ChatMessageControllerMock {
     /// Simulates the initial conditions. Setting these values doesn't trigger any observer callback.
     func simulateInitial(message: ChatMessage, replies: [ChatMessage], state: DataController.State) {
         message_mock = message

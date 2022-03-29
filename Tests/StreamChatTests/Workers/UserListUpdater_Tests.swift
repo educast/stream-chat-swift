@@ -8,7 +8,7 @@ import XCTest
 
 final class UserListUpdater_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
+    var apiClient: APIClientSpy!
     var database: DatabaseContainer!
     
     var listUpdater: UserListUpdater!
@@ -17,8 +17,8 @@ final class UserListUpdater_Tests: XCTestCase {
         super.setUp()
         
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         
         listUpdater = UserListUpdater(database: database, apiClient: apiClient)
     }

@@ -5,9 +5,9 @@
 import Foundation
 @testable import StreamChat
 
-public class ChatChannelController_Mock: ChatChannelController {
+public class ChatChannelControllerMock: ChatChannelController {
     /// Creates a new mock instance of `ChatChannelController`.
-    public static func mock(chatClientConfig: ChatClientConfig? = nil) -> ChatChannelController_Mock {
+    public static func mock(chatClientConfig: ChatClientConfig? = nil) -> ChatChannelControllerMock {
         .init(
             channelQuery: .init(cid: try! .init(cid: "mock:channel")),
             channelListQuery: nil,
@@ -15,7 +15,7 @@ public class ChatChannelController_Mock: ChatChannelController {
         )
     }
 
-    public static func mock(client: ChatClient) -> ChatChannelController_Mock {
+    public static func mock(client: ChatClient) -> ChatChannelControllerMock {
         .init(
             channelQuery: .init(cid: try! .init(cid: "mock:channel")),
             channelListQuery: nil,
@@ -45,7 +45,7 @@ public class ChatChannelController_Mock: ChatChannelController {
     }
 }
 
-public extension ChatChannelController_Mock {
+public extension ChatChannelControllerMock {
     /// Simulates the initial conditions. Setting these values doesn't trigger any observer callback.
     func simulateInitial(channel: ChatChannel, messages: [ChatMessage], state: DataController.State) {
         channel_mock = channel

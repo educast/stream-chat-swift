@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `ConnectionDetailsProviderDelegate` implementation allowing capturing the delegate calls
-final class TestConnectionDetailsProviderDelegate: ConnectionDetailsProviderDelegate {
+final class ConnectionDetailsProviderDelegateSpy: ConnectionDetailsProviderDelegate {
     @Atomic var token: Token?
     @Atomic var tokenWaiters: [String: (Token?) -> Void] = [:]
 

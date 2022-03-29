@@ -15,9 +15,9 @@ final class APIClient_Tests: XCTestCase {
     
     var uniqueHeaderValue: String!
     
-    var encoder: TestRequestEncoder!
-    var decoder: TestRequestDecoder!
-    var cdnClient: CDNClient_Mock!
+    var encoder: RequestEncoderSpy!
+    var decoder: RequestDecoderSpy!
+    var cdnClient: CDNClientSpy!
     var tokenRefresher: ((@escaping () -> Void) -> Void)!
     var queueOfflineRequest: QueueOfflineRequestBlock!
 
@@ -29,17 +29,17 @@ final class APIClient_Tests: XCTestCase {
         
         // Prepare the URL protocol test environment
         sessionConfiguration = .ephemeral
-        RequestRecorderURLProtocol.startTestSession(with: &sessionConfiguration)
-        MockNetworkURLProtocol.startTestSession(with: &sessionConfiguration)
+        RequestRecorderURLProtocolMock.startTestSession(with: &sessionConfiguration)
+        URLProtocolMock.startTestSession(with: &sessionConfiguration)
         sessionConfiguration.httpMaximumConnectionsPerHost = Int.max
         
         // Some random value to ensure the headers are respected
         uniqueHeaderValue = .unique
         sessionConfiguration.httpAdditionalHeaders?["unique_value"] = uniqueHeaderValue
         
-        encoder = TestRequestEncoder(baseURL: baseURL, apiKey: apiKey)
-        decoder = TestRequestDecoder()
-        cdnClient = CDNClient_Mock()
+        encoder = RequestEncoderSpy(baseURL: baseURL, apiKey: apiKey)
+        decoder = RequestDecoderSpy()
+        cdnClient = CDNClientSpy()
         tokenRefresher = { _ in }
         queueOfflineRequest = { _ in }
         
@@ -64,8 +64,8 @@ final class APIClient_Tests: XCTestCase {
         tokenRefresher = nil
         queueOfflineRequest = nil
         
-        RequestRecorderURLProtocol.reset()
-        MockNetworkURLProtocol.reset()
+        RequestRecorderURLProtocolMock.reset()
+        URLProtocolMock.reset()
         
         super.tearDown()
     }
@@ -151,7 +151,7 @@ final class APIClient_Tests: XCTestCase {
         
         // Set up a successful mock network response for the request
         let mockNetworkResponseData = try JSONEncoder.stream.encode(TestUser(name: "Network Response"))
-        MockNetworkURLProtocol.mockResponse(request: testRequest, statusCode: 234, responseBody: mockNetworkResponseData)
+        URLProtocolMock.mockResponse(request: testRequest, statusCode: 234, responseBody: mockNetworkResponseData)
         
         // Set up a decoder response
         // ⚠️ Watch out: the user is different there, so we can distinguish between the incoming data
@@ -184,7 +184,7 @@ final class APIClient_Tests: XCTestCase {
         let encoderError = TestError()
         
         // Set up a mock network response from the request
-        MockNetworkURLProtocol.mockResponse(request: testRequest, statusCode: 444, error: networkError)
+        URLProtocolMock.mockResponse(request: testRequest, statusCode: 444, error: networkError)
         
         // Set up a decoder response to return `encoderError`
         decoder.decodeRequestResponse = .failure(encoderError)
@@ -532,8 +532,8 @@ final class APIClient_Tests: XCTestCase {
     func test_whenInRegularModeRecoveryRequestsShouldThrowAnAssert() {
         let testUser = TestUser(name: "test")
         decoder.decodeRequestResponse = .success(testUser)
-        let loggerMock = LoggerMock()
-        loggerMock.injectMock()
+        let LoggerSpy = LoggerSpy()
+        LoggerSpy.injectMock()
 
         let lastRequestExpectation = expectation(description: "Last request completed")
         (1...5).forEach { index in
@@ -543,10 +543,10 @@ final class APIClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 0.1, handler: nil)
-        XCTAssertEqual(loggerMock.assertionFailureCalls, 5)
+        XCTAssertEqual(LoggerSpy.assertionFailureCalls, 5)
         XCTAssertCall("encodeRequest(for:completion:)", on: encoder, times: 5)
         XCTAssertCall("decodeRequestResponse(data:response:error:)", on: decoder, times: 5)
-        loggerMock.restoreLogger()
+        LoggerSpy.restoreLogger()
     }
 
     func test_whenInRecoveryMode_startingMultipleRecoveryRequestsAtTheSameTimeShouldRunThemInSerial() {

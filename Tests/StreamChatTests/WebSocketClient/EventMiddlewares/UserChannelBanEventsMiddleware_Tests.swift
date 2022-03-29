@@ -7,7 +7,7 @@
 import XCTest
 
 final class UserChannelBanEventsMiddleware_Tests: XCTestCase {
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     var middleware: UserChannelBanEventsMiddleware!
 
     // MARK: - Set up
@@ -15,7 +15,7 @@ final class UserChannelBanEventsMiddleware_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         middleware = .init()
     }
 

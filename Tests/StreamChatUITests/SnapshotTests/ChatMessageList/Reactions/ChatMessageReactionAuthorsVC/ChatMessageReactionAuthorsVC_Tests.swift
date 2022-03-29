@@ -9,7 +9,7 @@ import XCTest
 
 final class ChatMessageReactionAuthorsVC_Tests: XCTestCase {
     var vc: ChatMessageReactionAuthorsVC!
-    var messageControllerMock: ChatMessageController_Mock!
+    var messageControllerMock: ChatMessageControllerMock!
 
     let currentUserId = UserId.unique
     var defaultReactions: [ChatMessageReaction] {
@@ -47,7 +47,7 @@ final class ChatMessageReactionAuthorsVC_Tests: XCTestCase {
         vc = ChatMessageReactionAuthorsVC()
         vc.components = Components.mock
 
-        messageControllerMock = ChatMessageController_Mock.mock(currentUserId: currentUserId)
+        messageControllerMock = ChatMessageControllerMock.mock(currentUserId: currentUserId)
         messageControllerMock.startObserversIfNeeded_mock = {}
         messageControllerMock.message_mock = .mock(
             id: .unique,

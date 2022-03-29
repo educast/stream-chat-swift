@@ -5,7 +5,7 @@
 import Foundation
 @testable import StreamChat
 
-final class LoggerMock: Logger, Spy {
+final class LoggerSpy: Logger, Spy {
     var originalLogger: Logger?
     var recordedFunctions: [String] = []
 

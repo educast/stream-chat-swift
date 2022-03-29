@@ -8,8 +8,8 @@ import XCTest
 
 final class AttachmentUploader_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
     var uploader: AttachmentUploader!
 
     // MARK: - Setup
@@ -18,8 +18,8 @@ final class AttachmentUploader_Tests: XCTestCase {
         super.setUp()
 
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         uploader = AttachmentUploader(database: database, apiClient: apiClient)
     }
 

@@ -10,12 +10,12 @@ import XCTest
 
 @available(iOS 13, *)
 final class ChannelController_Combine_Tests: iOS13TestCase {
-    var channelController: ChannelControllerMock!
+    var channelController: ChannelControllerSpy!
     var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
-        channelController = ChannelControllerMock()
+        channelController = ChannelControllerSpy()
         cancellables = []
     }
     
@@ -37,7 +37,7 @@ final class ChannelController_Combine_Tests: iOS13TestCase {
             .store(in: &cancellables)
         
         // Keep only the weak reference to the controller. The existing publisher should keep it alive.
-        weak var controller: ChannelControllerMock? = channelController
+        weak var controller: ChannelControllerSpy? = channelController
         channelController = nil
         
         controller?.delegateCallback { $0.controller(controller!, didChangeState: .remoteDataFetched) }
@@ -56,7 +56,7 @@ final class ChannelController_Combine_Tests: iOS13TestCase {
             .store(in: &cancellables)
         
         // Keep only the weak reference to the controller. The existing publisher should keep it alive.
-        weak var controller: ChannelControllerMock? = channelController
+        weak var controller: ChannelControllerSpy? = channelController
         channelController = nil
 
         let newChannel: ChatChannel = .mock(cid: .unique, name: .unique, imageURL: .unique(), extraData: [:])
@@ -79,7 +79,7 @@ final class ChannelController_Combine_Tests: iOS13TestCase {
             .store(in: &cancellables)
         
         // Keep only the weak reference to the controller. The existing publisher should keep it alive.
-        weak var controller: ChannelControllerMock? = channelController
+        weak var controller: ChannelControllerSpy? = channelController
         channelController = nil
 
         let newMessage: ChatMessage = .unique
@@ -102,7 +102,7 @@ final class ChannelController_Combine_Tests: iOS13TestCase {
             .store(in: &cancellables)
         
         // Keep only the weak reference to the controller. The existing publisher should keep it alive.
-        weak var controller: ChannelControllerMock? = channelController
+        weak var controller: ChannelControllerSpy? = channelController
         channelController = nil
 
         let memberEvent: TestMemberEvent = .unique
@@ -124,7 +124,7 @@ final class ChannelController_Combine_Tests: iOS13TestCase {
             .store(in: &cancellables)
         
         // Keep only the weak reference to the controller. The existing publisher should keep it alive.
-        weak var controller: ChannelControllerMock? = channelController
+        weak var controller: ChannelControllerSpy? = channelController
         channelController = nil
 
         let typingUser = ChatUser(

@@ -10,12 +10,12 @@ import XCTest
 final class CoreDataLazy_Tests: StressTestCase {
     @CoreDataLazy var value: Int
     
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     
     override func setUp() {
         super.setUp()
         
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
     }
     
     override func tearDown() {

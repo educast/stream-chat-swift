@@ -212,7 +212,7 @@ final class UserListController_Tests: XCTestCase {
     // MARK: - Delegate tests
     
     func test_settingDelegate_leadsToFetchingLocalData() {
-        let delegate = TestUserListControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = UserListControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
            
         // Check initial state
         XCTAssertEqual(controller.state, .initialized)
@@ -225,7 +225,7 @@ final class UserListController_Tests: XCTestCase {
     
     func test_delegate_isNotifiedAboutStateChanges() throws {
         // Set the delegate
-        let delegate = TestUserListControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = UserListControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert delegate is notified about state changes
@@ -243,7 +243,7 @@ final class UserListController_Tests: XCTestCase {
     
     func test_delegateMethodsAreCalled() throws {
         // Set the delegate
-        let delegate = TestUserListControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = UserListControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert the delegate is assigned correctly. We should test this because of the type-erasing we

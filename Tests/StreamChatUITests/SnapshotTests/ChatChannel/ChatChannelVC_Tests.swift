@@ -9,15 +9,15 @@ import XCTest
 
 final class ChatChannelVC_Tests: XCTestCase {
     var vc: ChatChannelVC!
-    var channelControllerMock: ChatChannelController_Mock!
+    var channelControllerMock: ChatChannelControllerMock!
     
     override func setUp() {
         super.setUp()
         var components = Components.mock
-        components.channelHeaderView = ChatChannelHeaderView_Mock.self
+        components.channelHeaderView = ChatChannelHeaderViewMock.self
         vc = ChatChannelVC()
         vc.components = components
-        channelControllerMock = ChatChannelController_Mock.mock()
+        channelControllerMock = ChatChannelControllerMock.mock()
         vc.channelController = channelControllerMock
     }
 
@@ -273,7 +273,7 @@ private extension ChatChannelVC_Tests {
     }
 }
 
-private class ChatChannelHeaderView_Mock: ChatChannelHeaderView {
+private class ChatChannelHeaderViewMock: ChatChannelHeaderView {
     override var currentUserId: UserId? {
         .unique
     }
@@ -281,7 +281,7 @@ private class ChatChannelHeaderView_Mock: ChatChannelHeaderView {
     override func setUp() {
         super.setUp()
 
-        let mockedChannelController = ChatChannelController_Mock.mock()
+        let mockedChannelController = ChatChannelControllerMock.mock()
         mockedChannelController.channel_mock = .mock(cid: .unique)
         channelController = mockedChannelController
     }

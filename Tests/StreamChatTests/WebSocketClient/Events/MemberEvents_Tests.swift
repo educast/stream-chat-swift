@@ -20,21 +20,21 @@ final class MemberEvents_Tests: XCTestCase {
     }
     
     func test_added() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberAdded", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberAdded")
         let event = try eventDecoder.decode(from: json) as? MemberAddedEventDTO
         XCTAssertEqual(event?.member.user.id, "steep-moon-9")
         XCTAssertEqual(event?.cid, ChannelId(type: .messaging, id: "new_channel_9125"))
     }
     
     func test_updated() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberUpdated", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberUpdated")
         let event = try eventDecoder.decode(from: json) as? MemberUpdatedEventDTO
         XCTAssertEqual(event?.member.user.id, "count_dooku")
         XCTAssertEqual(event?.cid, ChannelId(type: .messaging, id: "!members-jkE22mnWM5tjzHPBurvjoVz0spuz4FULak93veyK0lY"))
     }
     
     func test_removed() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberRemoved", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberRemoved")
         let event = try eventDecoder.decode(from: json) as? MemberRemovedEventDTO
         XCTAssertEqual(event?.user.id, "r2-d2")
         XCTAssertEqual(event?.cid, ChannelId(type: .messaging, id: "!members-jkE22mnWM5tjzHPBurvjoVz0spuz4FULak93veyK0lY"))
@@ -44,7 +44,7 @@ final class MemberEvents_Tests: XCTestCase {
     
     func test_memberAddedEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let eventPayload = EventPayload(
@@ -80,7 +80,7 @@ final class MemberEvents_Tests: XCTestCase {
     
     func test_memberUpdatedEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let eventPayload = EventPayload(
@@ -116,7 +116,7 @@ final class MemberEvents_Tests: XCTestCase {
     
     func test_memberRemovedEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let eventPayload = EventPayload(
@@ -166,7 +166,7 @@ final class MemberEventsIntegration_Tests: XCTestCase {
     }
     
     func test_MemberAddedEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberAdded", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberAdded")
         let event = try eventDecoder.decode(from: json) as? MemberAddedEventDTO
         
         let unwrappedEvent = try XCTUnwrap(event)
@@ -189,7 +189,7 @@ final class MemberEventsIntegration_Tests: XCTestCase {
     }
 
     func test_MemberUpdatedEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberUpdated", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberUpdated")
         let event = try eventDecoder.decode(from: json) as? MemberUpdatedEventDTO
         
         let unwrappedEvent = try XCTUnwrap(event)
@@ -206,7 +206,7 @@ final class MemberEventsIntegration_Tests: XCTestCase {
     }
     
     func test_MemberRemovedEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "MemberRemoved", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "MemberRemoved")
         let event = try eventDecoder.decode(from: json) as? MemberRemovedEventDTO
         
         let channelId = ChannelId(type: .messaging, id: "!members-jkE22mnWM5tjzHPBurvjoVz0spuz4FULak93veyK0lY")

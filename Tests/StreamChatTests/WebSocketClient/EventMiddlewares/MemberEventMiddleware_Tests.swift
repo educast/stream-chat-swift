@@ -7,7 +7,7 @@
 import XCTest
 
 final class MemberEventMiddleware_Tests: XCTestCase {
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     var middleware: MemberEventMiddleware!
     
     // MARK: - Set up
@@ -15,7 +15,7 @@ final class MemberEventMiddleware_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         middleware = .init()
     }
     

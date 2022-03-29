@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `MessageSearchControllerDelegate` implementation allowing capturing the delegate calls
-final class TestMessageSearchControllerDelegate: QueueAwareDelegate, ChatMessageSearchControllerDelegate {
+final class MessageSearchControllerDelegateSpy: QueueAwareDelegate, ChatMessageSearchControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didChangeMessages_changes: [ListChange<ChatMessage>]?
 

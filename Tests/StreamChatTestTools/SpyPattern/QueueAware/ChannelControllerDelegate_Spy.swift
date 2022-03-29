@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 /// A concrete `ChannelControllerDelegate` implementation allowing capturing the delegate calls
-final class TestChannelControllerDelegate: QueueAwareDelegate, ChatChannelControllerDelegate {
+final class ChannelControllerDelegateSpy: QueueAwareDelegate, ChatChannelControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var willStartFetchingRemoteDataCalledCounter = 0
     @Atomic var didStopFetchingRemoteDataCalledCounter = 0

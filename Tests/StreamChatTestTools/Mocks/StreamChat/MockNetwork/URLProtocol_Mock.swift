@@ -8,8 +8,8 @@ import XCTest
 @testable import StreamChat
 
 /// This URLProtocol intercepts the network communication and provides mock responses for the registered endpoints.
-final class MockNetworkURLProtocol: URLProtocol {
-    static let testSessionHeaderKey = "MockNetworkURLProtocol_test_session_id"
+final class URLProtocolMock: URLProtocol {
+    static let testSessionHeaderKey = "URLProtocolMock_test_session_id"
     
     /// Starts a new recording session. Adds a unique identifier to the configuration headers and listens only
     /// for the request with this id.
@@ -18,15 +18,16 @@ final class MockNetworkURLProtocol: URLProtocol {
         let newSessionId = UUID().uuidString
         currentSessionId = newSessionId
         
-        // MockNetworkURLProtocol always has to be first, but not if the RequestRecorderURLProtocol is presented
-        if let recorderProtocolIdx = configuration.protocolClasses?.firstIndex(where: { $0 is RequestRecorderURLProtocol.Type }) {
-            configuration.protocolClasses?.insert(MockNetworkURLProtocol.self, at: recorderProtocolIdx + 1)
+        // URLProtocolMock always has to be first, but not if the RequestRecorderURLProtocolMock is presented
+        if let recorderProtocolIdx = configuration.protocolClasses?
+            .firstIndex(where: { $0 is RequestRecorderURLProtocolMock.Type }) {
+            configuration.protocolClasses?.insert(Self.self, at: recorderProtocolIdx + 1)
         } else {
-            configuration.protocolClasses?.insert(MockNetworkURLProtocol.self, at: 0)
+            configuration.protocolClasses?.insert(Self.self, at: 0)
         }
         
         var existingHeaders = configuration.httpAdditionalHeaders ?? [:]
-        existingHeaders[MockNetworkURLProtocol.testSessionHeaderKey] = newSessionId
+        existingHeaders[Self.testSessionHeaderKey] = newSessionId
         configuration.httpAdditionalHeaders = existingHeaders
     }
     
@@ -99,7 +100,7 @@ final class MockNetworkURLProtocol: URLProtocol {
     }
 }
 
-extension MockNetworkURLProtocol {
+extension URLProtocolMock {
     /// Creates a successful mock response for the given endpoint.
     ///
     /// - Parameters:

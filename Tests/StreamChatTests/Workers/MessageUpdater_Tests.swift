@@ -9,9 +9,9 @@ import XCTest
 
 final class MessageUpdater_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
-    var messageRepository: MessageRepositoryMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
+    var messageRepository: MessageRepositorySpy!
     var messageUpdater: MessageUpdater!
     
     // MARK: Setup
@@ -20,9 +20,9 @@ final class MessageUpdater_Tests: XCTestCase {
         super.setUp()
         
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
-        messageRepository = MessageRepositoryMock(database: database, apiClient: apiClient)
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
+        messageRepository = MessageRepositorySpy(database: database, apiClient: apiClient)
         messageUpdater = MessageUpdater(
             isLocalStorageEnabled: true,
             messageRepository: messageRepository,

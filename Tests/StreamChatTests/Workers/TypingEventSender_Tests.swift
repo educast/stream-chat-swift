@@ -8,8 +8,8 @@ import XCTest
 
 final class TypingEventsSender_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
     var time: VirtualTime!
     var eventSender: TypingEventsSender!
     
@@ -17,8 +17,8 @@ final class TypingEventsSender_Tests: XCTestCase {
         super.setUp()
         
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         
         time = VirtualTime()
         VirtualTimeTimer.time = time

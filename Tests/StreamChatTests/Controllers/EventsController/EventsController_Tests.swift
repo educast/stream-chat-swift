@@ -72,7 +72,7 @@ final class EventsController_Tests: XCTestCase {
         controller.callbackQueue = .testQueue(withId: callbackQueueID)
         
         // Create and set the delegate.
-        let delegate = TestEventsControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = EventsControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Create `event -> should be processed` mapping.
@@ -106,7 +106,7 @@ final class EventsController_Tests: XCTestCase {
     
     func test_whenEventsNotificationIsObserved_theUnknownUserEvent_isForwardedToDelegate() {
         // Create and set the delegate.
-        let delegate = TestEventsControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = EventsControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Create `event -> should be processed` mapping.
@@ -123,7 +123,7 @@ final class EventsController_Tests: XCTestCase {
     
     func test_whenEventsNotificationIsObserved_theUnknownChannelEvent_isForwardedToDelegate() throws {
         // Create and set the delegate.
-        let delegate = TestEventsControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = EventsControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         
         // Create `event -> should be processed` mapping.

@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 import XCTest
 
-final class TestRequestDecoder: RequestDecoder, Spy {
+final class RequestDecoderSpy: RequestDecoder, Spy {
     var recordedFunctions: [String] = []
     var decodeRequestResponse: Result<Any, Error>?
     var decodeRequestDelay: TimeInterval?
@@ -26,7 +26,7 @@ final class TestRequestDecoder: RequestDecoder, Spy {
         decodeRequestResponse_error = error
 
         guard let simulatedResponse = decodeRequestResponse else {
-            log.warning("TestRequestDecoder simulated response not set. Throwing a TestError.")
+            log.warning("RequestDecoderSpy simulated response not set. Throwing a TestError.")
             throw TestError()
         }
 

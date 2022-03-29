@@ -7,7 +7,7 @@ import Foundation
 import XCTest
 
 /// Mock implementation of APIClient allowing easy control and simulation of responses.
-final class APIClientMock: APIClient, Spy {
+final class APIClientSpy: APIClient, Spy {
     var recordedFunctions: [String] = []
 
     /// The last endpoint `request` function was called with.
@@ -128,13 +128,13 @@ final class APIClientMock: APIClient, Spy {
     }
 }
 
-extension APIClientMock {
+extension APIClientSpy {
     convenience init() {
         self.init(
             sessionConfiguration: .ephemeral,
             requestEncoder: DefaultRequestEncoder(baseURL: .unique(), apiKey: .init(.unique)),
             requestDecoder: DefaultRequestDecoder(),
-            CDNClient: CDNClient_Mock(),
+            CDNClient: CDNClientSpy(),
             tokenRefresher: { _ in },
             queueOfflineRequest: { _ in }
         )

@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `ChannelListControllerDelegate` implementation allowing capturing the delegate calls
-final class TestChannelListControllerDelegate: QueueAwareDelegate, ChatChannelListControllerDelegate {
+final class ChannelListControllerDelegateSpy: QueueAwareDelegate, ChatChannelListControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var willChangeChannels_called = false
     @Atomic var didChangeChannels_changes: [ListChange<ChatChannel>]?

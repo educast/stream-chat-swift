@@ -5,13 +5,13 @@
 import Foundation
 @testable import StreamChat
 
-// A concrete `ChannelListObserver ` implementation allowing capturing the delegate calls
+// A concrete `ChannelListObserver` implementation allowing capturing the delegate calls
 final class TestChannelListObserver {
     let databaseObserver: ListDatabaseObserver<ChannelId, ChannelDTO>
 
     var observedChanges: [ListChange<ChannelId>] = []
 
-    init(database: DatabaseContainerMock) {
+    init(database: DatabaseContainerSpy) {
         databaseObserver = ListDatabaseObserver<ChannelId, ChannelDTO>(
             context: database.viewContext,
             fetchRequest: ChannelDTO.allChannelsFetchRequest,

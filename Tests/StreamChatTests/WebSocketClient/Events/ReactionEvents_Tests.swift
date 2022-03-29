@@ -24,7 +24,7 @@ final class ReactionEvents_Tests: XCTestCase {
     }
     
     func test_new() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionNew", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionNew")
         let event = try eventDecoder.decode(from: json) as? ReactionNewEventDTO
         let reactionPayload = event?.payload.reaction
         XCTAssertEqual(event?.user.id, userId)
@@ -38,7 +38,7 @@ final class ReactionEvents_Tests: XCTestCase {
     }
     
     func test_updated() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionUpdated", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionUpdated")
         let event = try eventDecoder.decode(from: json) as? ReactionUpdatedEventDTO
         let reactionPayload = event?.payload.reaction
         XCTAssertEqual(event?.user.id, userId)
@@ -52,7 +52,7 @@ final class ReactionEvents_Tests: XCTestCase {
     }
     
     func test_deleted() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionDeleted", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionDeleted")
         let event = try eventDecoder.decode(from: json) as? ReactionDeletedEventDTO
         let reactionPayload = event?.payload.reaction
         XCTAssertEqual(event?.user.id, userId)
@@ -88,7 +88,7 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     }
 
     func test_ReactionNewEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionNew", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionNew")
         let event = try eventDecoder.decode(from: json) as? ReactionNewEventDTO
         
         // For message to be received, we need to have channel:
@@ -120,10 +120,10 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     }
     
     func test_ReactionUpdatedEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionUpdated", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionUpdated")
         let event = try eventDecoder.decode(from: json) as? ReactionUpdatedEventDTO
         
-        let newReactionJSON = XCTestCase.mockData(fromFile: "ReactionNew", bundle: .testTools)
+        let newReactionJSON = XCTestCase.mockData(fromFile: "ReactionNew")
         let newReactionEvent = try eventDecoder.decode(from: newReactionJSON) as? ReactionNewEventDTO
         let newReactionPayload = try XCTUnwrap(newReactionEvent?.payload.reaction)
         
@@ -163,7 +163,7 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     }
     
     func test_ReactionDeletedEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "ReactionDeleted", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "ReactionDeleted")
         let event = try eventDecoder.decode(from: json) as? ReactionDeletedEventDTO
         
         // For message to be received, we need to have channel:
@@ -198,7 +198,7 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     
     func test_reactionNewEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let channel: ChannelDetailPayload = .dummy(cid: .unique)
@@ -240,7 +240,7 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     
     func test_reactionUpdatedEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let channel: ChannelDetailPayload = .dummy(cid: .unique)
@@ -282,7 +282,7 @@ final class ReactionEventsIntegration_Tests: XCTestCase {
     
     func test_reactionDeletedEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let channel: ChannelDetailPayload = .dummy(cid: .unique)

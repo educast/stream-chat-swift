@@ -191,7 +191,7 @@ final class MemberController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
 
         // Set the delegate
-        controller.delegate = TestChannelMemberControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChannelMemberControllerDelegateSpy(expectedQueueId: callbackQueueID)
 
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -211,7 +211,7 @@ final class MemberController_Tests: XCTestCase {
         XCTAssertEqual(controller.state, .initialized)
 
         // Set the delegate
-        controller.delegate = TestChannelMemberControllerDelegate(expectedQueueId: callbackQueueID)
+        controller.delegate = ChannelMemberControllerDelegateSpy(expectedQueueId: callbackQueueID)
 
         // Assert state changed
         AssertAsync.willBeEqual(controller.state, .localDataFetched)
@@ -242,7 +242,7 @@ final class MemberController_Tests: XCTestCase {
     // MARK: - Delegate
 
     func test_delegate_isAssignedCorrectly() {
-        let delegate = TestChannelMemberControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelMemberControllerDelegateSpy(expectedQueueId: callbackQueueID)
 
         // Set the delegate
         controller.delegate = delegate
@@ -253,7 +253,7 @@ final class MemberController_Tests: XCTestCase {
 
     func test_delegate_isNotifiedAboutStateChanges() throws {
         // Set the delegate
-        let delegate = TestChannelMemberControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelMemberControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Synchronize
@@ -271,7 +271,7 @@ final class MemberController_Tests: XCTestCase {
     
     func test_delegate_isNotifiedAboutMemberUpdates() throws {
         // Set the delegate
-        let delegate = TestChannelMemberControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = ChannelMemberControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
 
         // Create member in the database.

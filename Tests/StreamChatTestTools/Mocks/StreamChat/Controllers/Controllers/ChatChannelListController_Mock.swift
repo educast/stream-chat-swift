@@ -5,11 +5,11 @@
 import Foundation
 @testable import StreamChat
 
-public class ChatChannelListController_Mock: ChatChannelListController {
+public class ChatChannelListControllerMock: ChatChannelListController {
     public var loadNextChannelsIsCalled = false
 
     /// Creates a new mock instance of `ChatChannelListController`.
-    public static func mock() -> ChatChannelListController_Mock {
+    public static func mock() -> ChatChannelListControllerMock {
         .init(query: .init(filter: .equal(.memberCount, to: 0)), client: .mock())
     }
     
@@ -29,7 +29,7 @@ public class ChatChannelListController_Mock: ChatChannelListController {
     }
 }
 
-public extension ChatChannelListController_Mock {
+public extension ChatChannelListControllerMock {
     /// Simulates the initial conditions. Setting these values doesn't trigger any observer callback.
     func simulateInitial(channels: [ChatChannel], state: DataController.State) {
         channels_mock = channels

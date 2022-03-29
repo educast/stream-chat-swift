@@ -12,13 +12,13 @@ import XCTest
 final class ChatThreadView_Tests: iOS13TestCase {
     var chatThreadView: SwiftUIViewControllerRepresentable<ChatThreadVC>!
     
-    var channelControllerMock: ChatChannelController_Mock!
-    var messageControllerMock: ChatMessageController_Mock!
+    var channelControllerMock: ChatChannelControllerMock!
+    var messageControllerMock: ChatMessageControllerMock!
 
     override func setUp() {
         super.setUp()
-        channelControllerMock = ChatChannelController_Mock.mock()
-        messageControllerMock = ChatMessageController_Mock.mock()
+        channelControllerMock = ChatChannelControllerMock.mock()
+        messageControllerMock = ChatMessageControllerMock.mock()
         channelControllerMock.simulateInitial(
             channel: .mock(cid: .unique),
             messages: [],
@@ -56,8 +56,8 @@ final class ChatThreadView_Tests: iOS13TestCase {
 
     func test_customNavigationViewValues_arePopulated() {
         struct CustomView: View {
-            let channelControllerMock = ChatChannelController_Mock.mock()
-            let messageControllerMock = ChatMessageController_Mock.mock()
+            let channelControllerMock = ChatChannelControllerMock.mock()
+            let messageControllerMock = ChatMessageControllerMock.mock()
 
             init() {
                 channelControllerMock.simulateInitial(

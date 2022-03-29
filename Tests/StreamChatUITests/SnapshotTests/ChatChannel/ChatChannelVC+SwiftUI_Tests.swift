@@ -11,11 +11,11 @@ import XCTest
 @available(iOS 13.0, *)
 final class ChatChannelView_Tests: iOS13TestCase {
     var chatChannel: SwiftUIViewControllerRepresentable<ChatChannelVC>!
-    var mockedChannelController: ChatChannelController_Mock!
+    var mockedChannelController: ChatChannelControllerMock!
 
     override func setUp() {
         super.setUp()
-        mockedChannelController = ChatChannelController_Mock.mock()
+        mockedChannelController = ChatChannelControllerMock.mock()
         chatChannel = ChatChannelVC.asView(mockedChannelController)
     }
 
@@ -39,8 +39,8 @@ final class ChatChannelView_Tests: iOS13TestCase {
 
     func test_customNavigationViewValues_arePopulated() {
         struct CustomView: View {
-            let mockedChannelController = ChatChannelController_Mock.mock()
-            let mockedUserSearchController = ChatUserSearchController_Mock.mock()
+            let mockedChannelController = ChatChannelControllerMock.mock()
+            let mockedUserSearchController = ChatUserSearchControllerMock.mock()
 
             init() {
                 mockedChannelController.simulateInitial(

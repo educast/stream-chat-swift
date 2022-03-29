@@ -7,8 +7,8 @@
 import XCTest
 
 final class ChannelEventsController_Tests: XCTestCase {
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
     var notificationCenter: EventNotificationCenterMock!
     var eventSender: EventSenderMock!
     var callbackQueueID: UUID!
@@ -19,8 +19,8 @@ final class ChannelEventsController_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         notificationCenter = EventNotificationCenterMock(database: database)
         eventSender = EventSenderMock(database: database, apiClient: apiClient)
         callbackQueueID = UUID()
@@ -60,7 +60,7 @@ final class ChannelEventsController_Tests: XCTestCase {
         let cid: ChannelId = .unique
         
         // Create channel controller for the given cid.
-        let channelController = ChannelControllerMock(channelQuery: .init(cid: cid))
+        let channelController = ChannelControllerSpy(channelQuery: .init(cid: cid))
         
         // Create channel events controller via channel controller.
         let channelEventsController = channelController.eventsController()
@@ -225,7 +225,7 @@ final class ChannelEventsController_Tests: XCTestCase {
             eventSender: eventSender,
             notificationCenter: notificationCenter
         )
-        let delegate = TestEventsControllerDelegate(expectedQueueId: callbackQueueID)
+        let delegate = EventsControllerDelegateSpy(expectedQueueId: callbackQueueID)
         controller.delegate = delegate
         controller.callbackQueue = callbackQueue
         

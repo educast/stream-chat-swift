@@ -108,7 +108,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_databaseContainer_callsResetEphemeralValues_onAllEphemeralValuesContainerEntities() throws {
         // Create a new on-disc database with the test data model
         let dbURL = URL.newTemporaryFileURL()
-        var database: DatabaseContainerMock? = try DatabaseContainerMock(
+        var database: DatabaseContainerSpy? = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             modelName: "TestDataModel",
             bundle: Bundle(for: DatabaseContainer_Tests.self)
@@ -127,14 +127,14 @@ final class DatabaseContainer_Tests: XCTestCase {
         AssertAsync.canBeReleased(&database)
         
         // Create a new database with the same underlying SQLite store
-        var newDatabase: DatabaseContainer! = try DatabaseContainerMock(
+        var newDatabase: DatabaseContainer! = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             modelName: "TestDataModel",
             bundle: Bundle(for: DatabaseContainer_Tests.self)
         )
         
         // Assert `resetEphemeralValues` is called on DatabaseContainer
-        XCTAssert((newDatabase as! DatabaseContainerMock).resetEphemeralValues_called)
+        XCTAssert((newDatabase as! DatabaseContainerSpy).resetEphemeralValues_called)
 
         let testObject2 = try newDatabase.viewContext
             .fetch(NSFetchRequest<TestManagedObject>(entityName: "TestManagedObject"))
@@ -149,7 +149,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_databaseContainer_doesntCallsResetEphemeralValues_whenFlagIsSetToFalse() throws {
         // Create a new on-disc database with the test data model
         let dbURL = URL.newTemporaryFileURL()
-        let database = try DatabaseContainerMock(
+        let database = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             shouldResetEphemeralValuesOnStart: false,
             modelName: "TestDataModel",
@@ -163,7 +163,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_databaseContainer_removesAllData_whenShouldFlushOnStartIsTrue() throws {
         // Create a new on-disc database with the test data model
         let dbURL = URL.newTemporaryFileURL()
-        var database: DatabaseContainerMock? = try DatabaseContainerMock(
+        var database: DatabaseContainerSpy? = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             modelName: "TestDataModel",
             bundle: Bundle(for: DatabaseContainer_Tests.self)
@@ -179,7 +179,7 @@ final class DatabaseContainer_Tests: XCTestCase {
         XCTAssertNotNil(testObject)
                 
         // Create a new database with the same underlying SQLite store and shouldFlushOnStart config
-        database = try DatabaseContainerMock(
+        database = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             shouldFlushOnStart: true,
             modelName: "TestDataModel",
@@ -193,7 +193,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_databaseContainer_createsNewDatabase_whenPersistentStoreFailsToLoad() throws {
         // Create a new on-disc database with the test data model
         let dbURL = URL.newTemporaryFileURL()
-        _ = try DatabaseContainerMock(
+        _ = try DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: dbURL),
             modelName: "TestDataModel",
             bundle: Bundle(for: DatabaseContainer_Tests.self)
@@ -202,7 +202,7 @@ final class DatabaseContainer_Tests: XCTestCase {
         // Create a new database with the same url but totally different models
         // Should re-create the database
         XCTAssertNoThrow(
-            try DatabaseContainerMock(
+            try DatabaseContainerSpy(
                 kind: .onDisk(databaseFileURL: dbURL),
                 modelName: "TestDataModel2",
                 bundle: Bundle(for: DatabaseContainer_Tests.self)
@@ -213,7 +213,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_databaseContainer_hasDefinedBehaviorForInMemoryStore_whenShouldFlushOnStartIsTrue() throws {
         // Create a new in-memory database that should flush on start and assert no error is thrown
         XCTAssertNoThrow(
-            try DatabaseContainerMock(
+            try DatabaseContainerSpy(
                 kind: .inMemory,
                 shouldFlushOnStart: true,
                 modelName: "TestDataModel",
@@ -227,7 +227,7 @@ final class DatabaseContainer_Tests: XCTestCase {
         cachingSettings.chatChannel.lastActiveMembersLimit = .unique
         cachingSettings.chatChannel.lastActiveWatchersLimit = .unique
         
-        let database = try DatabaseContainerMock(kind: .inMemory, localCachingSettings: cachingSettings)
+        let database = try DatabaseContainerSpy(kind: .inMemory, localCachingSettings: cachingSettings)
         
         XCTAssertEqual(database.viewContext.localCachingSettings, cachingSettings)
         
@@ -243,7 +243,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_deletedMessagesVisibility_isStoredInAllContexts() throws {
         let visibility = ChatClientConfig.DeletedMessageVisibility.alwaysVisible
 
-        let database = try DatabaseContainerMock(kind: .inMemory, deletedMessagesVisibility: visibility)
+        let database = try DatabaseContainerSpy(kind: .inMemory, deletedMessagesVisibility: visibility)
 
         XCTAssertEqual(database.viewContext.deletedMessagesVisibility, visibility)
 
@@ -259,7 +259,7 @@ final class DatabaseContainer_Tests: XCTestCase {
     func test_shouldShowShadowedMessages_isStoredInAllContexts() throws {
         let shouldShowShadowedMessages = Bool.random()
         
-        let database = try DatabaseContainerMock(kind: .inMemory, shouldShowShadowedMessages: shouldShowShadowedMessages)
+        let database = try DatabaseContainerSpy(kind: .inMemory, shouldShowShadowedMessages: shouldShowShadowedMessages)
         
         XCTAssertEqual(database.viewContext.shouldShowShadowedMessages, shouldShowShadowedMessages)
         

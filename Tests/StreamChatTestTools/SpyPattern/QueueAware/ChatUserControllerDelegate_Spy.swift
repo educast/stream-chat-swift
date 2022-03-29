@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 // A concrete `ChatUserControllerDelegate` implementation allowing capturing the delegate calls
-final class TestChatUserControllerDelegate: QueueAwareDelegate, ChatUserControllerDelegate {
+final class ChatUserControllerDelegateSpy: QueueAwareDelegate, ChatUserControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didUpdateUser_change: EntityChange<ChatUser>?
 

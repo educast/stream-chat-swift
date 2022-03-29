@@ -7,7 +7,7 @@ import Foundation
 import XCTest
 
 // A concrete `UserControllerDelegate` implementation allowing capturing the delegate calls
-final class TestUserControllerDelegate: QueueAwareDelegate, CurrentChatUserControllerDelegate {
+final class UserControllerDelegateSpy: QueueAwareDelegate, CurrentChatUserControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didChangeCurrentUser_change: EntityChange<CurrentChatUser>?
     @Atomic var didChangeCurrentUserUnreadCount_count: UnreadCount?

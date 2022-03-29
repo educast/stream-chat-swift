@@ -2,8 +2,7 @@
 // Copyright © 2022 Stream.io Inc. All rights reserved.
 //
 
-import Foundation
 @_exported import StreamChatTestHelpers
-import XCTest
+import Foundation
 
-public final class StreamChatTestTools {}
+final class StreamChatUITests {}

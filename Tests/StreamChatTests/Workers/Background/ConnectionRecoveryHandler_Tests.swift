@@ -11,8 +11,8 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     var handler: DefaultConnectionRecoveryHandler!
     var mockChatClient: ChatClientMock!
     var mockInternetConnection: InternetConnectionMock!
-    var mockBackgroundTaskScheduler: MockBackgroundTaskScheduler!
-    var mockRetryStrategy: MockRetryStrategy!
+    var mockBackgroundTaskScheduler: BackgroundTaskSchedulerMock!
+    var mockRetryStrategy: RetryStrategySpy!
     var mockTime: VirtualTime { VirtualTimeTimer.time }
         
     override func setUp() {
@@ -21,8 +21,8 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
         VirtualTimeTimer.time = .init()
         
         mockChatClient = ChatClientMock(config: .init(apiKeyString: .unique))
-        mockBackgroundTaskScheduler = MockBackgroundTaskScheduler()
-        mockRetryStrategy = MockRetryStrategy()
+        mockBackgroundTaskScheduler = BackgroundTaskSchedulerMock()
+        mockRetryStrategy = RetryStrategySpy()
         mockInternetConnection = .init(notificationCenter: mockChatClient.eventNotificationCenter)
     }
     
@@ -483,7 +483,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     // MARK: - Websocket connection
 
     func test_webSocketStateUpdate_connecting() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // Simulate connection update
@@ -493,7 +493,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_connected() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // Simulate connection update
@@ -504,7 +504,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_disconnected_userInitiated() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // We need to set the state on the client as well
@@ -520,7 +520,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_disconnected_systemInitiated() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // We need to set the state on the client as well
@@ -540,7 +540,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_initialized() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // Simulate connection update
@@ -550,7 +550,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_waitingForConnectionId() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // Simulate connection update
@@ -560,7 +560,7 @@ final class ConnectionRecoveryHandler_Tests: XCTestCase {
     }
 
     func test_webSocketStateUpdate_disconnecting() {
-        let syncRepository = SyncRepositoryMock(client: mockChatClient)
+        let syncRepository = SyncRepositorySpy(client: mockChatClient)
         handler = makeConnectionRecoveryHandler(keepConnectionAliveInBackground: false, syncRepository: syncRepository)
 
         // Simulate connection update
@@ -583,7 +583,7 @@ private extension ConnectionRecoveryHandler_Tests {
         let handler = DefaultConnectionRecoveryHandler(
             webSocketClient: mockChatClient.mockWebSocketClient,
             eventNotificationCenter: mockChatClient.eventNotificationCenter,
-            syncRepository: syncRepository ?? SyncRepositoryMock(client: mockChatClient),
+            syncRepository: syncRepository ?? SyncRepositorySpy(client: mockChatClient),
             backgroundTaskScheduler: mockBackgroundTaskScheduler,
             internetConnection: mockInternetConnection,
             reconnectionStrategy: mockRetryStrategy,

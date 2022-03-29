@@ -7,15 +7,15 @@
 import XCTest
 
 final class EventSender_Tests: XCTestCase {
-    var apiClient: APIClientMock!
+    var apiClient: APIClientSpy!
     var database: DatabaseContainer!
     var sender: EventSender!
     
     override func setUp() {
         super.setUp()
         
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         sender = EventSender(database: database, apiClient: apiClient)
     }
     

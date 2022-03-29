@@ -8,8 +8,8 @@ import XCTest
 
 /// This URLProtocol subclass allows to intercept the network communication
 /// and provides the latest network request made.
-final class RequestRecorderURLProtocol: URLProtocol {
-    static let testSessionHeaderKey = "RequestRecorderURLProtocol_test_session_id"
+final class RequestRecorderURLProtocolMock: URLProtocol {
+    static let testSessionHeaderKey = "RequestRecorderURLProtocolMock_test_session_id"
     
     /// Starts a new recording session. Adds a unique identifier to the configuration headers and listens only
     /// for the request with this id.
@@ -18,9 +18,9 @@ final class RequestRecorderURLProtocol: URLProtocol {
         let newSessionId = UUID().uuidString
         currentSessionId = newSessionId
         
-        configuration.protocolClasses?.insert(RequestRecorderURLProtocol.self, at: 0)
+        configuration.protocolClasses?.insert(Self.self, at: 0)
         var existingHeaders = configuration.httpAdditionalHeaders ?? [:]
-        existingHeaders[RequestRecorderURLProtocol.testSessionHeaderKey] = newSessionId
+        existingHeaders[Self.testSessionHeaderKey] = newSessionId
         configuration.httpAdditionalHeaders = existingHeaders
     }
     

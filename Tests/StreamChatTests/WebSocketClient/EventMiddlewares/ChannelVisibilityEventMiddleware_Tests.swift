@@ -7,7 +7,7 @@
 import XCTest
 
 final class ChannelVisibilityEventMiddleware_Tests: XCTestCase {
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     var middleware: ChannelVisibilityEventMiddleware!
 
     // MARK: - Set up
@@ -15,7 +15,7 @@ final class ChannelVisibilityEventMiddleware_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         middleware = .init()
     }
 

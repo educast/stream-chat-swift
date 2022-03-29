@@ -8,8 +8,8 @@ import XCTest
 
 final class CurrentUserUpdater_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
     
     var currentUserUpdater: CurrentUserUpdater!
     
@@ -19,8 +19,8 @@ final class CurrentUserUpdater_Tests: XCTestCase {
         super.setUp()
         
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         
         currentUserUpdater = .init(database: database, apiClient: apiClient)
     }

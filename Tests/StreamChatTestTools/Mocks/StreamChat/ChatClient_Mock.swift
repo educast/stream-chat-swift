@@ -19,9 +19,9 @@ extension ChatClient {
         .init(
             config: config ?? defaultMockedConfig,
             environment: .init(
-                apiClientBuilder: APIClient_Mock.init,
+                apiClientBuilder: APIClientSpy.init,
                 webSocketClientBuilder: {
-                    WebSocketClient_Mock(
+                    WebSocketClientMock(
                         sessionConfiguration: $0,
                         requestEncoder: $1,
                         eventDecoder: $2,
@@ -29,7 +29,7 @@ extension ChatClient {
                     )
                 },
                 databaseContainerBuilder: {
-                    try DatabaseContainerMock(
+                    try DatabaseContainerSpy(
                         kind: $0,
                         shouldFlushOnStart: $1,
                         shouldResetEphemeralValuesOnStart: $2,
@@ -52,16 +52,16 @@ extension ChatClient {
         )
     }
     
-    var mockAPIClient: APIClientMock {
-        apiClient as! APIClientMock
+    var mockAPIClient: APIClientSpy {
+        apiClient as! APIClientSpy
     }
     
     var mockWebSocketClient: WebSocketClientMock {
         webSocketClient as! WebSocketClientMock
     }
     
-    var mockDatabaseContainer: DatabaseContainerMock {
-        databaseContainer as! DatabaseContainerMock
+    var mockDatabaseContainer: DatabaseContainerSpy {
+        databaseContainer as! DatabaseContainerSpy
     }
 
     func simulateProvidedConnectionId(connectionId: ConnectionId?) {
@@ -149,7 +149,7 @@ final class ChatClientMock: ChatClient {
     // MARK: - Clean Up
 
     func cleanUp() {
-        (apiClient as? APIClientMock)?.cleanUp()
+        (apiClient as? APIClientSpy)?.cleanUp()
 
         fetchCurrentUserIdFromDatabase_called = false
 
@@ -166,7 +166,7 @@ final class ChatClientMock: ChatClient {
 extension ChatClient.Environment {
     static var mock: ChatClient.Environment {
         .init(
-            apiClientBuilder: APIClientMock.init,
+            apiClientBuilder: APIClientSpy.init,
             webSocketClientBuilder: {
                 WebSocketClientMock(
                     sessionConfiguration: $0,
@@ -177,7 +177,7 @@ extension ChatClient.Environment {
             },
             databaseContainerBuilder: {
                 do {
-                    return try DatabaseContainerMock(
+                    return try DatabaseContainerSpy(
                         kind: .onDisk(databaseFileURL: .newTemporaryFileURL()),
                         shouldFlushOnStart: $1,
                         shouldResetEphemeralValuesOnStart: $2,
@@ -186,8 +186,8 @@ extension ChatClient.Environment {
                         shouldShowShadowedMessages: $5
                     )
                 } catch {
-                    XCTFail("Unable to initialize DatabaseContainerMock \(error)")
-                    fatalError("Unable to initialize DatabaseContainerMock \(error)")
+                    XCTFail("Unable to initialize DatabaseContainerSpy \(error)")
+                    fatalError("Unable to initialize DatabaseContainerSpy \(error)")
                 }
             },
             requestEncoderBuilder: DefaultRequestEncoder.init,
@@ -215,22 +215,5 @@ extension ChatClient.Environment {
                 )
             }
         )
-    }
-}
-
-// ===== TEMP =====
-
-final class APIClient_Mock: APIClient {
-    override func request<Response>(
-        endpoint: Endpoint<Response>,
-        completion: @escaping (Result<Response, Error>) -> Void
-    ) where Response: Decodable {
-        // Do nothing for now
-    }
-}
-
-final class WebSocketClient_Mock: WebSocketClient {
-    override func connect() {
-        // Do nothing for now
     }
 }

@@ -8,11 +8,11 @@ import CoreData
 import XCTest
 
 final class EventNotificationCenter_Tests: XCTestCase {
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     
     override func setUp() {
         super.setUp()
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
     }
     
     override func tearDown() {

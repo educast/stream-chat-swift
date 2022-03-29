@@ -59,7 +59,7 @@ final class ChatMessagePopupVC_Tests: XCTestCase {
             verticalFittingPriority: .streamLow
         )
         
-        let chatMessageController = ChatMessageController_Mock.mock()
+        let chatMessageController = ChatMessageControllerMock.mock()
         chatMessageController.startObserversIfNeeded_mock = {}
         chatMessageController.simulateInitial(
             message: ChatMessage.mock(id: .unique, cid: .unique, text: "", author: ChatUser.mock(id: .unique)),
@@ -181,7 +181,7 @@ final class ChatMessagePopupVC_Tests: XCTestCase {
 
 extension ChatMessagePopupVC_Tests {
     private func makePopupVC(withReactions reactions: [ChatMessageReaction]) -> ChatMessagePopupVC {
-        let mockMessageController = ChatMessageController_Mock.mock()
+        let mockMessageController = ChatMessageControllerMock.mock()
         mockMessageController.message_mock = .mock(
             id: .unique,
             cid: .unique,

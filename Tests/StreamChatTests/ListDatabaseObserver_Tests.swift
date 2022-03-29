@@ -93,7 +93,7 @@ final class ListDatabaseObserver_Tests: XCTestCase {
         
         fetchRequest = NSFetchRequest(entityName: "TestManagedObject")
         fetchRequest.sortDescriptors = [.init(key: "testId", ascending: true)]
-        database = try! DatabaseContainerMock(
+        database = try! DatabaseContainerSpy(
             kind: .onDisk(databaseFileURL: .newTemporaryFileURL()),
             modelName: "TestDataModel",
             bundle: Bundle(for: ListDatabaseObserver_Tests.self)

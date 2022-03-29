@@ -11,7 +11,7 @@ final class MemberModelDTO_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
     }
     
     override func tearDown() {

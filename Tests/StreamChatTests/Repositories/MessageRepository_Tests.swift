@@ -7,8 +7,8 @@
 import XCTest
 
 final class MessageRepositoryTests: XCTestCase {
-    var database: DatabaseContainerMock!
-    var apiClient: APIClientMock!
+    var database: DatabaseContainerSpy!
+    var apiClient: APIClientSpy!
     var repository: MessageRepository!
     var cid: ChannelId!
 
@@ -126,14 +126,14 @@ final class MessageRepositoryTests: XCTestCase {
     // MARK: saveSuccessfullySentMessage
 
     func test_saveSuccessfullySentMessage_noChannel() {
-        let loggerMock = LoggerMock()
-        loggerMock.injectMock()
+        let LoggerSpy = LoggerSpy()
+        LoggerSpy.injectMock()
         let id = MessageId.unique
         let payload = MessagePayload.dummy(messageId: id, authorUserId: .anonymous, channel: nil)
         let message = runSaveSuccessfullySentMessageAndWait(payload: payload)
         XCTAssertNil(message)
-        XCTAssertEqual(loggerMock.assertionFailureCalls, 1)
-        loggerMock.restoreLogger()
+        XCTAssertEqual(LoggerSpy.assertionFailureCalls, 1)
+        LoggerSpy.restoreLogger()
     }
 
     func test_saveSuccessfullySentMessage_channelPayload_sending() throws {
@@ -168,8 +168,8 @@ final class MessageRepositoryTests: XCTestCase {
     }
 
     func test_saveSuccessfullySentMessage_channelPayload_newMessageWithoutChannel() throws {
-        let loggerMock = LoggerMock()
-        loggerMock.injectMock()
+        let LoggerSpy = LoggerSpy()
+        LoggerSpy.injectMock()
         let id = MessageId.unique
         let payload = MessagePayload.dummy(messageId: id, authorUserId: .anonymous, channel: nil)
 
@@ -179,8 +179,8 @@ final class MessageRepositoryTests: XCTestCase {
         let dbMessage = self.message(for: id)
         XCTAssertNil(message)
         XCTAssertNil(dbMessage)
-        XCTAssertEqual(loggerMock.assertionFailureCalls, 1)
-        loggerMock.restoreLogger()
+        XCTAssertEqual(LoggerSpy.assertionFailureCalls, 1)
+        LoggerSpy.restoreLogger()
     }
 
     func test_saveSuccessfullySentMessage_channelPayload_newMessageWithChannel() throws {

@@ -4,10 +4,9 @@
 
 import Foundation
 @testable import StreamChat
-import XCTest
 
 // A concrete `ConnectionControllerDelegate` implementation allowing capturing the delegate calls
-final class TestConnectionControllerDelegate: QueueAwareDelegate, ChatConnectionControllerDelegate {
+final class ConnectionControllerDelegateSpy: QueueAwareDelegate, ChatConnectionControllerDelegate {
     @Atomic var state: DataController.State?
     @Atomic var didUpdateConnectionStatus_statuses = [ConnectionStatus]()
 

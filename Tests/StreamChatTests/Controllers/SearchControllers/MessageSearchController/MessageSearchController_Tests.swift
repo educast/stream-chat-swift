@@ -133,7 +133,7 @@ final class MessageSearchController_Tests: XCTestCase {
     
     func test_searchWithText_resultIsReported() throws {
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert the delegate is assigned correctly. We should test this because of the type-erasing we
@@ -189,7 +189,7 @@ final class MessageSearchController_Tests: XCTestCase {
         try client.databaseContainer.createMessage(id: messageId)
         
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -213,7 +213,7 @@ final class MessageSearchController_Tests: XCTestCase {
         // the updater instance
         
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -274,7 +274,7 @@ final class MessageSearchController_Tests: XCTestCase {
     
     func test_searchWithTerm_emptySearch_clearsSearch() throws {
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -338,7 +338,7 @@ final class MessageSearchController_Tests: XCTestCase {
     
     func test_searchWithQuery_resultIsReported() throws {
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert the delegate is assigned correctly. We should test this because of the type-erasing we
@@ -393,7 +393,7 @@ final class MessageSearchController_Tests: XCTestCase {
         try client.databaseContainer.createMessage(id: messageId)
         
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -417,7 +417,7 @@ final class MessageSearchController_Tests: XCTestCase {
         // the updater instance
         
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -463,7 +463,7 @@ final class MessageSearchController_Tests: XCTestCase {
     
     func test_searchWithQuery_sortingIsRespected() throws {
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search
@@ -554,7 +554,7 @@ final class MessageSearchController_Tests: XCTestCase {
     
     func test_loadNextMessages_nextResultPage_isLoaded() throws {
         // Set the delegate
-        let delegate = TestMessageSearchControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = MessageSearchControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Make a search

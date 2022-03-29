@@ -14,7 +14,7 @@ final class EventMiddleware_Tests: XCTestCase {
     }
     
     func test_middlewareEvaluation() throws {
-        var database: DatabaseContainer! = DatabaseContainerMock()
+        var database: DatabaseContainer! = DatabaseContainerSpy()
         let usedSession = database.viewContext
         
         let chain: [EventMiddleware] = [

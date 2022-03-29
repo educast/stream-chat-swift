@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 
 /// Mock implementation of `BackgroundTaskScheduler`.
-final class MockBackgroundTaskScheduler: BackgroundTaskScheduler {
+final class BackgroundTaskSchedulerMock: BackgroundTaskScheduler {
     var isAppActive_called: Bool = false
     var isAppActive_returns: Bool = true
     var isAppActive: Bool {
@@ -46,7 +46,7 @@ final class MockBackgroundTaskScheduler: BackgroundTaskScheduler {
     }
 }
 
-extension MockBackgroundTaskScheduler {
+extension BackgroundTaskSchedulerMock {
     func simulateAppGoingToBackground() {
         isAppActive_returns = false
         startListeningForAppStateUpdates_onBackground?()

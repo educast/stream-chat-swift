@@ -7,11 +7,11 @@
 import XCTest
 
 final class UserDTO_Tests: XCTestCase {
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
     
     override func setUp() {
         super.setUp()
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
     }
     
     override func tearDown() {

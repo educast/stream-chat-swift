@@ -7,16 +7,16 @@
 import XCTest
 
 final class ChannelUpdater_Tests: XCTestCase {
-    var apiClient: APIClientMock!
-    var database: DatabaseContainerMock!
+    var apiClient: APIClientSpy!
+    var database: DatabaseContainerSpy!
     
     var channelUpdater: ChannelUpdater!
     
     override func setUp() {
         super.setUp()
 
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         
         channelUpdater = ChannelUpdater(database: database, apiClient: apiClient)
     }

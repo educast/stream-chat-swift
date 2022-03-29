@@ -1002,7 +1002,7 @@ final class ChannelController_Tests: XCTestCase {
     // MARK: - Delegate tests
     
     func test_settingDelegate_leadsToFetchingLocalData() {
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
            
         // Check initial state
         XCTAssertEqual(controller.state, .initialized)
@@ -1015,7 +1015,7 @@ final class ChannelController_Tests: XCTestCase {
     
     func test_delegate_isNotifiedAboutStateChanges() throws {
         // Set the delegate
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert delegate is notified about state changes
@@ -1046,7 +1046,7 @@ final class ChannelController_Tests: XCTestCase {
         controller.callbackQueue = .testQueue(withId: controllerCallbackQueueID)
 
         // Setup delegate
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
 
         // Simulate `synchronize` call
@@ -1096,7 +1096,7 @@ final class ChannelController_Tests: XCTestCase {
     }
     
     func test_channelMemberEvents_areForwardedToDelegate() throws {
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Simulate `synchronize()` call
@@ -1119,7 +1119,7 @@ final class ChannelController_Tests: XCTestCase {
         try client.databaseContainer.createUser(id: userId)
         
         // Set the queue for delegate calls
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Simulate `synchronize()` call
@@ -1142,7 +1142,7 @@ final class ChannelController_Tests: XCTestCase {
     }
     
     func test_delegateMethodsAreCalled() throws {
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Assert the delegate is assigned correctly. We should test this because of the type-erasing we
@@ -1170,7 +1170,7 @@ final class ChannelController_Tests: XCTestCase {
     }
     
     func test_channelUpdateDelegate_isCalled_whenChannelReadsAreUpdated() throws {
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         let userId: UserId = .unique
@@ -1227,7 +1227,7 @@ final class ChannelController_Tests: XCTestCase {
         setupControllerForNewDirectMessageChannel(currentUserId: currentUserId, otherUserId: otherUserId)
         
         // Create and set delegate
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Simulate synchronize
@@ -1287,7 +1287,7 @@ final class ChannelController_Tests: XCTestCase {
         setupControllerForNewDirectMessageChannel(currentUserId: currentUserId, otherUserId: otherUserId)
         
         // Create and set delegate
-        let delegate = TestChannelControllerDelegate(expectedQueueId: controllerCallbackQueueID)
+        let delegate = ChannelControllerDelegateSpy(expectedQueueId: controllerCallbackQueueID)
         controller.delegate = delegate
         
         // Simulate synchronize

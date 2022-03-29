@@ -22,7 +22,7 @@ final class TypingEvent_Tests: XCTestCase {
     }
 
     func test_parseTypingStartEvent() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStartTyping", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStartTyping")
         guard let event = try eventDecoder.decode(from: json) as? TypingEventDTO else {
             XCTFail()
             return
@@ -34,7 +34,7 @@ final class TypingEvent_Tests: XCTestCase {
     }
     
     func test_parseTypingStoptEvent() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStopTyping", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStopTyping")
         guard let event = try eventDecoder.decode(from: json) as? TypingEventDTO else {
             XCTFail()
             return
@@ -47,7 +47,7 @@ final class TypingEvent_Tests: XCTestCase {
     }
 
     func test_parseTypingStartEventInThread() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStartTypingThread", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStartTypingThread")
         guard let event = try eventDecoder.decode(from: json) as? TypingEventDTO else {
             XCTFail()
             return
@@ -58,7 +58,7 @@ final class TypingEvent_Tests: XCTestCase {
     }
     
     func test_parseTypingStoptEventInThread() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStopTypingThread", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStopTypingThread")
         guard let event = try eventDecoder.decode(from: json) as? TypingEventDTO else {
             XCTFail()
             return
@@ -72,7 +72,7 @@ final class TypingEvent_Tests: XCTestCase {
     
     func test_startTypingEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let eventPayload = EventPayload(
@@ -104,7 +104,7 @@ final class TypingEvent_Tests: XCTestCase {
     
     func test_stopTypingEventDTO_toDomainEvent() throws {
         // Create database session
-        let session = try DatabaseContainerMock(kind: .inMemory).viewContext
+        let session = try DatabaseContainerSpy(kind: .inMemory).viewContext
         
         // Create event payload
         let eventPayload = EventPayload(
@@ -157,7 +157,7 @@ final class TypingEventsIntegration_Tests: XCTestCase {
     }
 
     func test_UserStartTypingEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStartTyping", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStartTyping")
         let event = try eventDecoder.decode(from: json) as? TypingEventDTO
 
         let channelId: ChannelId = ChannelId(type: .messaging, id: "general")
@@ -178,7 +178,7 @@ final class TypingEventsIntegration_Tests: XCTestCase {
     }
     
     func test_UserStopTypingEventPayload_isHandled() throws {
-        let json = XCTestCase.mockData(fromFile: "UserStopTyping", bundle: .testTools)
+        let json = XCTestCase.mockData(fromFile: "UserStopTyping")
         let event = try eventDecoder.decode(from: json) as? TypingEventDTO
 
         let channelId: ChannelId = ChannelId(type: .messaging, id: "general")

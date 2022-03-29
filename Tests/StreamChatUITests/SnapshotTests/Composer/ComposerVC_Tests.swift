@@ -241,9 +241,9 @@ final class ComposerVC_Tests: XCTestCase {
             imageURL: nil
         )
         
-        let mockUserSearchController = ChatUserSearchController_Mock.mock()
+        let mockUserSearchController = ChatUserSearchControllerMock.mock()
         
-        let mockChannelController = ChatChannelController_Mock.mock()
+        let mockChannelController = ChatChannelControllerMock.mock()
         mockChannelController.client.currentUserId = .unique
         mockChannelController.channel_mock = .mock(
             cid: .unique,

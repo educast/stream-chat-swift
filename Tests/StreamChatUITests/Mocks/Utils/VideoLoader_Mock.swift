@@ -8,7 +8,7 @@ import AVKit
 import UIKit
 
 /// A mock implementation of video loader
-final class MockVideoLoader: VideoLoading {
+final class VideoLoaderMock: VideoLoading {
     lazy var loadPreviewForVideoMockFunc = MockFunc.mock(for: loadPreviewForVideo)
     lazy var videoAssetMockFunc = MockFunc.mock(for: videoAsset)
 

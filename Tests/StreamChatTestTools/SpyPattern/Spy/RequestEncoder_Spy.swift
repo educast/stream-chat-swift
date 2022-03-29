@@ -6,7 +6,7 @@ import Foundation
 @testable import StreamChat
 import XCTest
 
-final class TestRequestEncoder: RequestEncoder, Spy {
+final class RequestEncoderSpy: RequestEncoder, Spy {
     var recordedFunctions: [String] = []
     let init_baseURL: URL
     let init_apiKey: APIKey

@@ -8,11 +8,11 @@ import XCTest
 
 final class ChannelReadUpdaterMiddleware_Tests: XCTestCase {
     var middleware: ChannelReadUpdaterMiddleware!
-    fileprivate var database: DatabaseContainerMock!
+    fileprivate var database: DatabaseContainerSpy!
     
     override func setUp() {
         super.setUp()
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
         middleware = ChannelReadUpdaterMiddleware()
     }
     

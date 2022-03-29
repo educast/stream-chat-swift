@@ -9,11 +9,11 @@ import XCTest
 
 final class EventDTOConverterMiddleware_Tests: XCTestCase {
     var middleware: EventDTOConverterMiddleware!
-    var database: DatabaseContainerMock!
+    var database: DatabaseContainerSpy!
 
     override func setUp() {
         middleware = .init()
-        database = try! DatabaseContainerMock(kind: .inMemory)
+        database = try! DatabaseContainerSpy(kind: .inMemory)
         super.setUp()
     }
     

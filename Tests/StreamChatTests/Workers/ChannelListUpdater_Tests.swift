@@ -9,7 +9,7 @@ import XCTest
 
 final class ChannelListUpdater_Tests: XCTestCase {
     var webSocketClient: WebSocketClientMock!
-    var apiClient: APIClientMock!
+    var apiClient: APIClientSpy!
     var database: DatabaseContainer!
     
     var listUpdater: ChannelListUpdater!
@@ -18,8 +18,8 @@ final class ChannelListUpdater_Tests: XCTestCase {
         super.setUp()
         
         webSocketClient = WebSocketClientMock()
-        apiClient = APIClientMock()
-        database = DatabaseContainerMock()
+        apiClient = APIClientSpy()
+        database = DatabaseContainerSpy()
         
         listUpdater = ChannelListUpdater(database: database, apiClient: apiClient)
     }

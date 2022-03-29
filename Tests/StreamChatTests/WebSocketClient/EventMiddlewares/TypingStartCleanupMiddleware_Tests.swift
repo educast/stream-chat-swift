@@ -21,7 +21,7 @@ final class TypingStartCleanupMiddleware_Tests: XCTestCase {
         time = VirtualTime()
         VirtualTimeTimer.time = time
 
-        database = DatabaseContainerMock()
+        database = DatabaseContainerSpy()
     }
 
     override func tearDown() {
