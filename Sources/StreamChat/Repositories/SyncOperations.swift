@@ -91,7 +91,9 @@ final class WatchChannelOperation: AsyncOperation {
 final class RefetchChannelListQueryOperation: AsyncOperation {
     init(controller: ChatChannelListController, channelRepository: ChannelListUpdater, context: SyncContext) {
         super.init(maxRetries: syncOperationsMaximumRetries) { [weak controller] _, done in
-            guard let controller = controller, controller.canBeRecovered else {
+            // Temporary Fix: localDataFetched인 경우에도 recovery를 한다.
+            guard let controller = controller, (controller.canBeRecovered || controller.state == .localDataFetched) else {
+            // guard let controller = controller, controller.canBeRecovered else {
                 done(.continue)
                 return
             }
