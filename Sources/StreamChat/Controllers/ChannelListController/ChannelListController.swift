@@ -44,6 +44,7 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
 
     /// A Boolean value that returns wether pagination is finished
     public private(set) var hasLoadedAllPreviousChannels: Bool = false
+    private var willResetHasLoadedAllPreviousChannels: Bool = false
 
     /// A type-erased delegate.
     var multicastDelegate: MulticastDelegate<ChatChannelListControllerDelegate> = .init() {
@@ -75,6 +76,11 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
                 $0.controller(self, didChangeChannels: changes)
             }
             self?.handleLinkedChannels(changes)
+
+            if self?.willResetHasLoadedAllPreviousChannels == true {
+                self?.hasLoadedAllPreviousChannels = false
+                self?.willResetHasLoadedAllPreviousChannels = false
+            }
         }
 
         observer.onWillChange = { [weak self] in
@@ -235,7 +241,7 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
     func resetHasLoadedAllPreviousChannels(newCids: Set<ChannelId>) {
         let currentCids = Set(self.channels.map(\.cid))
         if !newCids.isSuperset(of: currentCids) {
-            hasLoadedAllPreviousChannels = false
+            willResetHasLoadedAllPreviousChannels = true
         }
     }
 
