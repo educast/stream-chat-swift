@@ -18,6 +18,7 @@ class DatabaseSessionMock: DatabaseSession {
     }
     
     var markChannelAsReadParams: (cid: ChannelId, userId: UserId, at: Date)?
+    var markChannelAsUnreadParams: (cid: ChannelId, userId: UserId)?
 }
 
 // Here start the boilerplate that forwards and intercepts the session calls if needed
@@ -190,8 +191,9 @@ extension DatabaseSessionMock {
         underlyingSession.markChannelAsRead(cid: cid, userId: userId, at: at)
     }
     
-    func markChannelAsUnread(_ cid: ChannelId, by userId: UserId) {
-        underlyingSession.markChannelAsUnread(cid, by: userId)
+    func markChannelAsUnread(cid: ChannelId, by userId: UserId) {
+        markChannelAsUnreadParams = (cid, userId)
+        underlyingSession.markChannelAsUnread(cid: cid, by: userId)
     }
 
     func loadChannelRead(cid: ChannelId, userId: String) -> ChannelReadDTO? {
