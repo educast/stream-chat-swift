@@ -487,8 +487,8 @@ lane :test_e2e_mock do |options|
     configuration: 'Debug',
     clean: true,
     devices: options[:device],
-    number_of_retries: 1,
-    concurrent_workers: 2
+    # number_of_retries: 1, // FIXME
+    concurrent_workers: 1
   )
 end
 

@@ -159,7 +159,7 @@ jobs:
       run: bundle exec fastlane test_e2e_mock device:"${{ env.IOS_SIMULATOR_DEVICE }}"
     - name: Archive test results
       uses: actions/upload-artifact@v3
-      if: ${{ failure() }}
+      if: failure()
       with:
         name: xctestresult
         path: fastlane/test_output/*.xcresult
