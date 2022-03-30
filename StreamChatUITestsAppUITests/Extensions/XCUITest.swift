@@ -8,7 +8,7 @@ import XCTest
 
 extension XCUIElement {
 
-    static var waitTimeout: Double { 5.0 }
+    static var waitTimeout: Double { 10.0 }
 
     var centralCoordinates: CGPoint {
         CGPoint(x: frame.midX, y: frame.midY)
