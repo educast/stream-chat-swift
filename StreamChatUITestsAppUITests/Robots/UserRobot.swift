@@ -31,16 +31,16 @@ public final class UserRobot: Robot {
     @discardableResult
     func deleteMessage() -> Self {
         let messageCell = MessageListPage.cells.firstMatch
-        messageCell.press(forDuration: 1)
-        MessageListPage.ContextMenu.delete.tap()
-        MessageListPage.PopUpButtons.delete.tap()
+        messageCell.press(forDuration: 2)
+        MessageListPage.ContextMenu.delete.wait().tap()
+        MessageListPage.PopUpButtons.delete.wait().tap()
         return self
     }
     
     @discardableResult
     func editMessage(_ newText: String) -> Self {
-        MessageListPage.cells.firstMatch.press(forDuration: 1)
-        MessageListPage.ContextMenu.edit.tap()
+        MessageListPage.cells.firstMatch.press(forDuration: 2)
+        MessageListPage.ContextMenu.edit.wait().tap()
         let inputField = MessageListPage.Composer.inputField
         inputField.tap(withNumberOfTaps: 3, numberOfTouches: 1)
         inputField.typeText(newText)
@@ -50,7 +50,7 @@ public final class UserRobot: Robot {
     
     @discardableResult
     private func reactionAction(reactionType: TestData.Reactions, eventType: EventType) -> Self {
-        MessageListPage.cells.firstMatch.press(forDuration: 1)
+        MessageListPage.cells.firstMatch.press(forDuration: 2)
         var reaction: XCUIElement {
             switch reactionType {
             case .love:
@@ -65,7 +65,7 @@ public final class UserRobot: Robot {
                 return MessageListPage.Reactions.like
             }
         }
-        reaction.tap()
+        reaction.wait().tap()
         return self
     }
     
