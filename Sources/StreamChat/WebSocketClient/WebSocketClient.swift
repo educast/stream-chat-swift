@@ -186,7 +186,32 @@ extension WebSocketClient: WebSocketEngineDelegate {
         connectionState = .waitingForConnectionId
     }
 
+    var currentUserId: UserId? {
+        guard let body = connectEndpoint?.body as? Dictionary<String, WebSocketConnectPayload> else {
+            return nil
+        }
+        return body["json"]?.userId
+    }
+
+    func isDroppable(message: String) -> Bool {
+        guard message.contains("\"type\":\"\(EventType.messageRead.rawValue)\"") ||
+                message.contains("\"type\":\"\(EventType.notificationMarkRead.rawValue)\"")
+        else {
+            return false
+        }
+
+        guard let currentUserId = currentUserId else {
+            return true
+        }
+
+        return !message.contains("\"user\":{\"id\":\"\(currentUserId)\"")
+    }
+
     func webSocketDidReceiveMessage(_ message: String) {
+        if isDroppable(message: message) {
+            return
+        }
+
         do {
             let messageData = Data(message.utf8)
             log.debug("Event received:\n\(messageData.debugPrettyPrintedJSON)", subsystems: .webSocket)
