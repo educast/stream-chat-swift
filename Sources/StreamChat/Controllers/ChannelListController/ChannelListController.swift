@@ -74,7 +74,7 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
     private(set) lazy var channelListObserver: ListDatabaseObserver<ChatChannel, ChannelDTO> = {
         let request = ChannelDTO.channelListFetchRequest(query: self.query)
         let observer = self.environment.createChannelListDatabaseObserver(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             request,
             { $0.asModel() }
         )
@@ -112,7 +112,7 @@ public class ChatChannelListController: DataController, DelegateCallable, DataSt
     
     lazy var updatedChannelObserver: ListDatabaseObserver<ChatChannel, ChannelDTO> = {
         let observer = self.environment.createChannelListDatabaseObserver(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             ChannelDTO.channelsFetchRequest(notLinkedTo: query),
             { $0.asModel() }
         )

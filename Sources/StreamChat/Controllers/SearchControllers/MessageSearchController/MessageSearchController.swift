@@ -88,7 +88,7 @@ public class ChatMessageSearchController: DataController, DelegateCallable, Data
     private func setMessagesObserver() {
         _messagesObserver.computeValue = { [unowned self] in
             let observer = ListDatabaseObserver(
-                context: self.client.databaseContainer.viewContext,
+                context: self.client.databaseContainer.backgroundReadOnlyContext,
                 fetchRequest: MessageDTO.messagesFetchRequest(
                     for: lastQuery ?? query
                 ),

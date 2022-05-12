@@ -91,7 +91,7 @@ public class ChatChannelMemberListController: DataController, DelegateCallable, 
     
     private func createMemberListObserver() -> ListDatabaseObserver<ChatChannelMember, MemberDTO> {
         let observer = environment.memberListObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             MemberDTO.members(matching: query),
             { $0.asModel() },
             NSFetchedResultsController<MemberDTO>.self

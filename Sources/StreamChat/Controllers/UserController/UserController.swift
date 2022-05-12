@@ -108,7 +108,7 @@ public class ChatUserController: DataController, DelegateCallable, DataStoreProv
     
     private func createUserObserver() -> EntityDatabaseObserver<ChatUser, UserDTO> {
         environment.userObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             UserDTO.user(withID: userId),
             { $0.asModel() },
             NSFetchedResultsController<UserDTO>.self

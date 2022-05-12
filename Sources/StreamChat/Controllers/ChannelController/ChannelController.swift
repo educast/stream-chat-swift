@@ -317,7 +317,7 @@ public class ChatChannelController: DataController, DelegateCallable, DataStoreP
                 return nil
             }
             let observer = EntityDatabaseObserver(
-                context: self.client.databaseContainer.viewContext,
+                context: self.client.databaseContainer.backgroundReadOnlyContext,
                 fetchRequest: ChannelDTO.fetchRequest(for: cid),
                 itemCreator: { $0.asModel() as ChatChannel }
             ).onChange { [weak self] change in
@@ -353,17 +353,17 @@ public class ChatChannelController: DataController, DelegateCallable, DataStoreP
             let sortAscending = self.messageOrdering == .topToBottom ? false : true
             var deletedMessageVisibility: ChatClientConfig.DeletedMessageVisibility?
             var shouldShowShadowedMessages: Bool?
-            self.client.databaseContainer.viewContext.performAndWait { [weak self] in
+            self.client.databaseContainer.backgroundReadOnlyContext.performAndWait { [weak self] in
                 guard let self = self else {
                     log.warning("Callback called while self is nil")
                     return
                 }
-                deletedMessageVisibility = self.client.databaseContainer.viewContext.deletedMessagesVisibility
-                shouldShowShadowedMessages = self.client.databaseContainer.viewContext.shouldShowShadowedMessages
+                deletedMessageVisibility = self.client.databaseContainer.backgroundReadOnlyContext.deletedMessagesVisibility
+                shouldShowShadowedMessages = self.client.databaseContainer.backgroundReadOnlyContext.shouldShowShadowedMessages
             }
 
             let observer = ListDatabaseObserver(
-                context: self.client.databaseContainer.viewContext,
+                context: self.client.databaseContainer.backgroundReadOnlyContext,
                 fetchRequest: MessageDTO.messagesFetchRequest(
                     for: cid,
                     sortAscending: sortAscending,

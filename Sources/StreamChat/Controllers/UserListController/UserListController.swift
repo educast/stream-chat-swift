@@ -58,7 +58,7 @@ public class ChatUserListController: DataController, DelegateCallable, DataStore
         let request = UserDTO.userListFetchRequest(query: self.query)
         
         let observer = self.environment.createUserListDabaseObserver(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             request,
             { $0.asModel() }
         )

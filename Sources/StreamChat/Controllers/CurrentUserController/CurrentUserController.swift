@@ -280,7 +280,7 @@ private extension EntityChange where Item == UnreadCount {
 private extension CurrentChatUserController {
     func createUserObserver() -> EntityDatabaseObserver<CurrentChatUser, CurrentUserDTO> {
         environment.currentUserObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             CurrentUserDTO.defaultFetchRequest,
             { $0.asModel() },
             NSFetchedResultsController<CurrentUserDTO>.self

@@ -89,7 +89,7 @@ public class ChatChannelWatcherListController: DataController, DelegateCallable,
     
     private func createWatchersObserver() -> ListDatabaseObserver<ChatUser, UserDTO> {
         let observer = environment.watcherListObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             UserDTO.watcherFetchRequest(cid: query.cid),
             { $0.asModel() as ChatUser },
             NSFetchedResultsController<UserDTO>.self

@@ -123,7 +123,7 @@ public class ChatChannelMemberController: DataController, DelegateCallable, Data
     
     private func createMemberObserver() -> EntityDatabaseObserver<ChatChannelMember, MemberDTO> {
         environment.memberObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             MemberDTO.member(userId, in: cid),
             { $0.asModel() },
             NSFetchedResultsController<MemberDTO>.self

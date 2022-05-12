@@ -71,7 +71,7 @@ class CurrentUserUpdater: Worker {
         }
         
         // We already have the device saved
-        if let currentUserDTO = database.viewContext.currentUser,
+        if let currentUserDTO = database.backgroundReadOnlyContext.currentUser,
            currentUserDTO.devices.first(where: { $0.id == deviceId }) != nil {
             saveCurrentDevice(deviceId: deviceId, completion: completion)
             return

@@ -585,7 +585,7 @@ extension ChatMessageController {
 private extension ChatMessageController {
     func createMessageObserver() -> EntityDatabaseObserver<ChatMessage, MessageDTO> {
         let observer = environment.messageObserverBuilder(
-            client.databaseContainer.viewContext,
+            client.databaseContainer.backgroundReadOnlyContext,
             MessageDTO.message(withID: messageId),
             { $0.asModel() },
             NSFetchedResultsController<MessageDTO>.self
@@ -602,12 +602,12 @@ private extension ChatMessageController {
             }
 
             let sortAscending = self.listOrdering == .topToBottom ? false : true
-            let deletedMessageVisibility = self.client.databaseContainer.viewContext
+            let deletedMessageVisibility = self.client.databaseContainer.backgroundReadOnlyContext
                 .deletedMessagesVisibility ?? .visibleForCurrentUser
-            let shouldShowShadowedMessages = self.client.databaseContainer.viewContext.shouldShowShadowedMessages ?? false
+            let shouldShowShadowedMessages = self.client.databaseContainer.backgroundReadOnlyContext.shouldShowShadowedMessages ?? false
 
             let observer = self.environment.repliesObserverBuilder(
-                self.client.databaseContainer.viewContext,
+                self.client.databaseContainer.backgroundReadOnlyContext,
                 MessageDTO.repliesFetchRequest(
                     for: self.messageId,
                     sortAscending: sortAscending,
