@@ -26,38 +26,47 @@ class CoreDataLazy<T> {
         var returnValue: T!
 
         // We need to make the changes inside the `mutate` block to ensure the wrapper is thread-safe.
-        __cached.mutate { value in
-            
-            if let value = value {
-                returnValue = value
-                return
-            }
 
-            let perform = {
-                log.assert(self.computeValue != nil, "You must set the `computeValue` closure before accessing the cached value.")
-                returnValue = self.computeValue()
-            }
-            
-            if let context = context {
-                guard persistentStoreIdentifier == context.persistentStoreCoordinator?.persistentStores.first?.identifier else {
-                    let message = """
-                    Persistent store identifier changed. This means the persistent store was reloaded, but a reference to a model was kept in memory.
-                    This can happen if a snapshot of data (ChatMessage, ChatUser, ChatChannel) was kept in memory after Database is wiped (for example, in the event of logging in with a new user).
-                    If you're sure there are no references to models from another session, please report this stack trace to Stream iOS Team.
-                    """
-                    log.error(message)
-                    fatalError(String(describing: message))
+        let perform = {
+            self.__cached.mutate { value in
+
+                if let value = value {
+                    returnValue = value
+                    return
                 }
-                context.performAndWait { perform() }
-            } else {
-                // This is a fallback for cases like tests, mocks, and other cases where it's known `computeValue` doesn't need to
-                // evaluated using `context.performAndWait {}`.
-                perform()
+
+                let perform = {
+                    log.assert(self.computeValue != nil, "You must set the `computeValue` closure before accessing the cached value.")
+                    returnValue = self.computeValue()
+                }
+
+                if let context = self.context {
+                    guard self.persistentStoreIdentifier == context.persistentStoreCoordinator?.persistentStores.first?.identifier else {
+                        let message = """
+                        Persistent store identifier changed. This means the persistent store was reloaded, but a reference to a model was kept in memory.
+                        This can happen if a snapshot of data (ChatMessage, ChatUser, ChatChannel) was kept in memory after Database is wiped (for example, in the event of logging in with a new user).
+                        If you're sure there are no references to models from another session, please report this stack trace to Stream iOS Team.
+                        """
+                        log.error(message)
+                        fatalError(String(describing: message))
+                    }
+                    context.performAndWait { perform() }
+                } else {
+                    // This is a fallback for cases like tests, mocks, and other cases where it's known `computeValue` doesn't need to
+                    // evaluated using `context.performAndWait {}`.
+                    perform()
+                }
+
+                value = returnValue
             }
-            
-            value = returnValue
         }
-        
+
+        if let context = context {
+            context.performAndWait { perform() }
+        } else {
+            perform()
+        }
+
         return returnValue
     }
     
